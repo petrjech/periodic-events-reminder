@@ -2,14 +2,37 @@ package com.jp.apps.weeklyreminder;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
+
+import static com.jp.apps.weeklyreminder.DatabaseSQLiteHelper.EVENTS_COLUMNS;
+import static com.jp.apps.weeklyreminder.DatabaseSQLiteHelper.EVENT_LOGS_COLUMNS;
+import static com.jp.apps.weeklyreminder.DatabaseSQLiteHelper.TABLES;
 
 public class EventDaoImpl implements EventDao {
 
-    private DatabaseSQLiteHelper dbHelper;
+    private final DatabaseSQLiteHelper dbHelper;
+
+    private static final String[] eventsColumns = {
+            EVENTS_COLUMNS.EVENT_ID.name(),
+            EVENTS_COLUMNS.DESCRIPTION.name(),
+            EVENTS_COLUMNS.IS_FROZEN.name(),
+            EVENTS_COLUMNS.NAME.name(),
+            EVENTS_COLUMNS.NEXT_OCCURRENCE.name(),
+            EVENTS_COLUMNS.PERIODICITY.name()
+    };
+
+    private static final String[] eventLogsColumns = {
+            EVENT_LOGS_COLUMNS.EVENT_ID.name(),
+            EVENT_LOGS_COLUMNS.ACTION.name(),
+            EVENT_LOGS_COLUMNS.DATE.name()
+    };
 
     public EventDaoImpl(Context context) {
         this.dbHelper = DatabaseSQLiteHelper.getInstance(context);
@@ -17,42 +40,142 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public long saveEvent(Event event) {
-        ContentValues values = new ContentValues();
-        values.put(DatabaseSQLiteHelper.EVENTS_COLUMNS.NAME.name(), event.getName());
-        values.put(DatabaseSQLiteHelper.EVENTS_COLUMNS.DESCRIPTION.name(), event.getDescription());
-        values.put(DatabaseSQLiteHelper.EVENTS_COLUMNS.IS_FROZEN.name(), event.isFrozen());
-        values.put(DatabaseSQLiteHelper.EVENTS_COLUMNS.NEXT_OCCURRENCE.name(), DatabaseSQLiteHelper.convertDateToString(event.getNextOccurrence()));
-        values.put(DatabaseSQLiteHelper.EVENTS_COLUMNS.PERIODICITY.name(), event.getPeriodicityInDays());
-
+        ContentValues values = getContentValues(event);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        long insertedId = db.insert("EVENTS", null, values);
-        db.close();
 
+        long insertedId = db.insert(TABLES.EVENTS.name(), null, values);
+        db.close();
         return insertedId;
     }
 
     @Override
     public boolean updateEvent(Event event) {
-        return false;
+        if (event.getId() == 0L) {
+            throw new IllegalArgumentException("Event id must be set.");
+        }
+
+        ContentValues values = getContentValues(event);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String where = EVENTS_COLUMNS.EVENT_ID.name() + " = ?";
+        String[] whereArgs = {"" + event.getId()};
+
+        int i = db.update(TABLES.EVENTS.name(), values, where, whereArgs);
+        db.close();
+        return i == 1;
     }
 
     @Override
-    public boolean develeEvent(Event event) {
-        return false;
+    public boolean deleteEvent(Event event) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String whereEvents = EVENTS_COLUMNS.EVENT_ID.name() + " = ?";
+        String whereEventLogs = EVENT_LOGS_COLUMNS.EVENT_ID.name() + " = ?";
+        String[] whereArgs = {"" + event.getId()};
+
+        int i = db.delete(TABLES.EVENTS.name(), whereEvents, whereArgs);
+        db.delete(TABLES.EVENT_LOGS.name(), whereEventLogs, whereArgs);
+        db.close();
+        return i == 1;
     }
 
     @Override
-    public List<Event> searchEvents(Map<String, String> criteria) {
-        return null;
+    public List<Event> getAllEvents() {
+        List<Event> result = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(TABLES.EVENTS.name(), eventsColumns, null, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            try {
+                result.add(cursorToEvent(cursor));
+            } catch (ParseException e) {
+                throw new RuntimeException("Database parse error", e);
+            }
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        db.close();
+        return result;
+    }
+
+    private Event cursorToEvent(Cursor cursor) throws ParseException {
+        int index = cursor.getColumnIndexOrThrow(EVENTS_COLUMNS.EVENT_ID.name());
+        long id = cursor.getLong(index);
+
+        index = cursor.getColumnIndexOrThrow(EVENTS_COLUMNS.NAME.name());
+        String name = cursor.getString(index);
+
+        index = cursor.getColumnIndexOrThrow(EVENTS_COLUMNS.DESCRIPTION.name());
+        String description = cursor.getString(index);
+
+        index = cursor.getColumnIndexOrThrow(EVENTS_COLUMNS.PERIODICITY.name());
+        int periodicity = cursor.getInt(index);
+
+        index = cursor.getColumnIndexOrThrow(EVENTS_COLUMNS.NEXT_OCCURRENCE.name());
+        Date nextOccurrence = DatabaseSQLiteHelper.convertStringToDate(cursor.getString(index));
+
+        index = cursor.getColumnIndexOrThrow(EVENTS_COLUMNS.IS_FROZEN.name());
+        boolean isFrozen = cursor.getInt(index) == 1;
+
+        return new Event(id, name, description, periodicity, nextOccurrence, isFrozen);
     }
 
     @Override
-    public long saveEventToLog(Event event, EventActions action) {
-        return 0;
+    public long saveEventToLog(Event event, Event.EventLogEntry eventLogEntry) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(EVENT_LOGS_COLUMNS.EVENT_ID.name(), event.getId());
+        values.put(EVENT_LOGS_COLUMNS.DATE.name(), DatabaseSQLiteHelper.convertDateToString(eventLogEntry.getDate()));
+        values.put(EVENT_LOGS_COLUMNS.ACTION.name(), eventLogEntry.getAction().name());
+        return db.insert(TABLES.EVENT_LOGS.name(), null, values);
     }
 
     @Override
-    public List<Event.EventLogEntry> getEventLog(Event event) {
-        return null;
+    public List<Event.EventLogEntry> getEventLogs(Event event) {
+        List<Event.EventLogEntry> result = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(
+                TABLES.EVENT_LOGS.name(),
+                eventLogsColumns,
+                EVENT_LOGS_COLUMNS.EVENT_ID + " = ?",
+                new String[] {"" + event.getId()},
+                null, null,
+                EVENT_LOGS_COLUMNS.DATE.name() + "DESC",
+                Parameters.QUERY_EVENT_LOGS_LIMIT);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            try {
+                result.add(cursorToEventLog(cursor, event));
+            } catch (ParseException e) {
+                throw new RuntimeException("Database parse error", e);
+            }
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        db.close();
+        return result;
+    }
+
+    private Event.EventLogEntry cursorToEventLog(Cursor cursor, Event event) throws ParseException {
+        int index = cursor.getColumnIndexOrThrow(EVENT_LOGS_COLUMNS.ACTION.name());
+        EventActions action = EventActions.valueOf(cursor.getString(index));
+
+        index = cursor.getColumnIndexOrThrow(EVENT_LOGS_COLUMNS.DATE.name());
+        Date date = DatabaseSQLiteHelper.convertStringToDate(cursor.getString(index));
+
+        return event.new EventLogEntry(date, action);
+    }
+
+    @NonNull
+    private ContentValues getContentValues(Event event) {
+        ContentValues values = new ContentValues();
+        values.put(EVENTS_COLUMNS.NAME.name(), event.getName());
+        values.put(EVENTS_COLUMNS.DESCRIPTION.name(), event.getDescription());
+        values.put(EVENTS_COLUMNS.IS_FROZEN.name(), event.isFrozen());
+        values.put(EVENTS_COLUMNS.NEXT_OCCURRENCE.name(), DatabaseSQLiteHelper.convertDateToString(event.getNextOccurrence()));
+        values.put(EVENTS_COLUMNS.PERIODICITY.name(), event.getPeriodicityInDays());
+        return values;
     }
 }

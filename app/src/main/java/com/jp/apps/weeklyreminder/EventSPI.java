@@ -1,5 +1,7 @@
 package com.jp.apps.weeklyreminder;
 
+import android.content.Context;
+
 import java.util.List;
 
 public interface EventSPI {
@@ -18,5 +20,7 @@ public interface EventSPI {
 
     void fulfillEvent();
 
-    List<Event> searchEvents();
+    List<Event> getAllSortedEvents(Context context);
+
+    void getEventLogs(Context context, Event event);
 }

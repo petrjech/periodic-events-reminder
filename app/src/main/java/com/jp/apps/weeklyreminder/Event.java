@@ -1,20 +1,22 @@
 package com.jp.apps.weeklyreminder;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Event {
+public class Event implements Comparable<Event> {
 
-    private long id;
+    private Long id;
     private String name;
     private String description;
-    private int periodicityInDays;
+    private Integer periodicityInDays;
     private Date nextOccurrence;
-    private boolean isFrozen;
+    private Boolean isFrozen;
     private List<EventLogEntry> eventLog = new ArrayList<>();
 
-    public Event(long id, String name, String description, int periodicityInDays, Date nextOccurrance, boolean isFrozen) {
+    public Event(Long id, String name, String description, Integer periodicityInDays, Date nextOccurrance, Boolean isFrozen) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -23,23 +25,19 @@ public class Event {
         this.isFrozen = isFrozen;
     }
 
-    public final boolean isFrozen() {
+    public final Boolean isFrozen() {
         return isFrozen;
     }
 
-    public final void setFrozen(boolean isFrozen) {
+    public final void setFrozen(Boolean isFrozen) {
         this.isFrozen = isFrozen;
     }
 
-    public final long getId() {
+    public final Long getId() {
         return id;
     }
 
-    public final void setId(long id) {
-        this.id = id;
-    }
-
-    public final void setId(int id) {
+    public final void setId(Long id) {
         this.id = id;
     }
 
@@ -59,11 +57,11 @@ public class Event {
         this.description = description;
     }
 
-    public final int getPeriodicityInDays() {
+    public final Integer getPeriodicityInDays() {
         return periodicityInDays;
     }
 
-    public final void setPeriodicityInDays(int periodicityInDays) {
+    public final void setPeriodicityInDays(Integer periodicityInDays) {
         this.periodicityInDays = periodicityInDays;
     }
 
@@ -81,6 +79,25 @@ public class Event {
 
     public final void setEventLog(List<EventLogEntry> eventLog) {
         this.eventLog = eventLog;
+    }
+
+    public final double getEventApproach() {
+        double result;
+        Date today = new Date();
+        long difference = nextOccurrence.getTime() - today.getTime();
+        if (difference <= 0) {
+            return 1;
+        }
+        long periodicityInMilliseconds = periodicityInDays * 24 * 60 * 60 * 1000;
+        if (periodicityInMilliseconds <= difference) {
+            return 0;
+        }
+        return  ((double) periodicityInMilliseconds - difference) / periodicityInMilliseconds;
+    }
+
+    @Override
+    public int compareTo(@NonNull Event other) {
+        return Double.compare(this.getEventApproach(), other.getEventApproach());
     }
 
     class EventLogEntry {

@@ -1,7 +1,6 @@
 package com.jp.apps.weeklyreminder;
 
 import android.annotation.SuppressLint;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -19,16 +18,16 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
     @SuppressLint("SimpleDateFormat")
     private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
+    public enum TABLES {
+        EVENTS, EVENT_LOGS
+    }
+
     public enum EVENTS_COLUMNS {
         EVENT_ID, NAME, DESCRIPTION, PERIODICITY, NEXT_OCCURRENCE, IS_FROZEN
     }
 
     public enum EVENT_LOGS_COLUMNS {
-        EVENT_ID, DATE, ACTION_ID
-    }
-
-    public enum ACTIONS_COLUMNS {
-        ACTION_ID, NAME
+        EVENT_ID, DATE, ACTION
     }
 
     private static DatabaseSQLiteHelper instance;
@@ -48,10 +47,7 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(createTableEvents());
         database.execSQL(createTableEventLogs());
-        database.execSQL(createTableEventActions());
         database.execSQL(createEventLogsIndex());
-
-        fillActionsTable(database);
     }
 
     @Override
@@ -60,16 +56,8 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
         throw new UnsupportedOperationException("Version 1 - upgrading of the database isn't implemented");
     }
 
-    private void fillActionsTable(SQLiteDatabase database) {
-        for (EventActions action : EventActions.values()) {
-            ContentValues values = new ContentValues();
-            values.put("NAME", action.name());
-            database.insert("ACTIONS", null, values);
-        }
-    }
-
     private static String createTableEvents(){
-        return "CREATE TABLE EVENTS("
+        return "CREATE TABLE " + TABLES.EVENTS.name() +"("
                 + EVENTS_COLUMNS.EVENT_ID.name()      + " INTEGER PRIMARY KEY ASC,"
                 + EVENTS_COLUMNS.NAME.name()          + " TEXT NOT NULL,"
                 + EVENTS_COLUMNS.DESCRIPTION.name()   + " TEXT NOT NULL,"
@@ -80,24 +68,16 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
     }
 
     private static String createTableEventLogs(){
-        return "CREATE TABLE EVENT_LOGS("
+        return "CREATE TABLE " + TABLES.EVENT_LOGS.name() + "("
                 + EVENT_LOGS_COLUMNS.EVENT_ID.name()  + " INTEGER NOT NULL,"
                 + EVENT_LOGS_COLUMNS.DATE.name()      + " TEXT NOT NULL,"
-                + EVENT_LOGS_COLUMNS.ACTION_ID.name() + " INTEGER,"
-                + "FOREIGN KEY(" + EVENT_LOGS_COLUMNS.EVENT_ID.name() + ") REFERENCES EVENTS(" + EVENTS_COLUMNS.EVENT_ID.name() + "),"
-                + "FOREIGN KEY(" + EVENT_LOGS_COLUMNS.ACTION_ID.name() + ") REFERENCES EVENT_ACTIONS(" +  ACTIONS_COLUMNS.ACTION_ID.name() + ")"
-                + ");";
-    }
-
-    private static String createTableEventActions(){
-        return "CREATE TABLE EVENT_ACTIONS("
-                + ACTIONS_COLUMNS.ACTION_ID.name() + " INTEGER PRIMARY KEY ASC,"
-                + ACTIONS_COLUMNS.NAME.name()      + " TEXT NOT NULL"
+                + EVENT_LOGS_COLUMNS.ACTION.name() + " TEXT NOT NULL,"
+                + "FOREIGN KEY(" + EVENT_LOGS_COLUMNS.EVENT_ID.name() + ") REFERENCES EVENTS(" + EVENTS_COLUMNS.EVENT_ID.name() + ")"
                 + ");";
     }
 
     private static String createEventLogsIndex(){
-        return "CREATE INDEX EVENT_LOGS_IDX ON EVENT_LOGS ("
+        return "CREATE INDEX EVENT_LOGS_IDX ON " + TABLES.EVENT_LOGS + "("
                 + EVENT_LOGS_COLUMNS.EVENT_ID.name()  + ", " + EVENT_LOGS_COLUMNS.DATE.name() + " DESC);";
     }
 

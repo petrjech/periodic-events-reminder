@@ -1,9 +1,6 @@
 package com.jp.apps.weeklyreminder;
 
-import android.content.Context;
-
 import java.util.List;
-import java.util.Map;
 
 public interface EventDao {
 
@@ -11,11 +8,11 @@ public interface EventDao {
 
     boolean updateEvent(Event event);
 
-    boolean develeEvent(Event event);
+    boolean deleteEvent(Event event);
 
-    List<Event> searchEvents(Map<String, String> criteria);
+    List<Event> getAllEvents();
 
-    long saveEventToLog(Event event, EventActions action);
+    long saveEventToLog(Event event, Event.EventLogEntry eventLogEntry);
 
-    List<Event.EventLogEntry> getEventLog(Event event);
+    List<Event.EventLogEntry> getEventLogs(Event event);
 }
