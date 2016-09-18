@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Weekly Reminder</string>
     <string name="action_settings">Settings</string>
+    <string name="activity_main_approaching_events_list_item_button">UPDATE</string>
+    <string name="activity_main_menu_add_event">Add Event</string>
+    <string name="title_activity_activity_event">ActivityEvent</string>
 </resources>

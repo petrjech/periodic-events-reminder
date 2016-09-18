@@ -1,5 +1,6 @@
 package com.jp.apps.weeklyreminder;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
@@ -93,6 +94,26 @@ public class Event implements Comparable<Event> {
             return 0;
         }
         return  ((double) periodicityInMilliseconds - difference) / periodicityInMilliseconds;
+    }
+
+    public void putExtrasToIntent(Intent intent) {
+        intent.putExtra("id", id);
+        intent.putExtra("name", name);
+        intent.putExtra("description", description);
+        intent.putExtra("periodicityInDays", periodicityInDays);
+        intent.putExtra("nextOccurrence", nextOccurrence.getTime());
+        intent.putExtra("isFrozen", isFrozen);
+    }
+
+    public static Event getEventFromIntent(Intent intent) {
+        Long id = intent.getLongExtra("id", 0L);
+        String name = intent.getStringExtra("name");
+        String description = intent.getStringExtra("description");
+        Integer periodicityInDays = intent.getIntExtra("periodicityInDays", 0);
+        Date nextOccurrence = new Date(intent.getLongExtra("nextOccurrence", 0L));
+        Boolean isFrozen = intent.getBooleanExtra("isFrozen", false);
+
+        return new Event(id, name, description, periodicityInDays, nextOccurrence, isFrozen);
     }
 
     @Override

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--  Single List Item Design -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/event_list_item"
+    android:id="@+id/approaching_events_list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -22,6 +22,7 @@
             android:id="@+id/event_list_item_button"
             android:layout_weight="0.25"
             android:layout_width="0dp"
+            android:text="@string/activity_main_approaching_events_list_item_button"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
@@ -29,6 +30,8 @@
         android:id="@+id/event_list_item_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:max="100"
+        android:indeterminate="false"
         style="@android:style/Widget.ProgressBar.Small" />
 
 </LinearLayout>
