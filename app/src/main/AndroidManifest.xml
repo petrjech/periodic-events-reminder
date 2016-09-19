@@ -21,8 +21,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ActivityEvent"
-            android:label="@string/title_activity_activity_event"
+            android:name=".ActivityUpdateEvent"
+            android:label="@string/activity_update_event_title"
+            android:parentActivityName=".ActivityMain"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jp.apps.weeklyreminder.ActivityMain" />
+        </activity>
+        <activity
+            android:name=".ActivityAddEvent"
+            android:label="@string/activity_add_event_title"
             android:parentActivityName=".ActivityMain"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

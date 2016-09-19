@@ -16,7 +16,8 @@ import java.util.List;
 
 public class ActivityMain extends AppCompatActivity {
 
-    private final static int OPEN_EVENT_REQUEST = 0;
+    private final static int ADD_EVENT_REQUEST = 0;
+    private final static int UPDATE_EVENT_REQUEST = 1;
 
     private List<Event> approachingEventsList = new ArrayList<>();
     private EventSPI eventSPI = new EventSPIImpl(this);
@@ -68,9 +69,8 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void addEvent() {
-        Intent intent = new Intent(this, ActivityEvent.class);
-        intent.setAction(Intent.ACTION_INSERT);
-        startActivityForResult(intent, OPEN_EVENT_REQUEST);
+        Intent intent = new Intent(this, ActivityUpdateEvent.class);
+        startActivityForResult(intent, ADD_EVENT_REQUEST);
     }
 
     private void showSettings() {
@@ -78,15 +78,14 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void openEventActivity(Event event) {
-        Intent intent = new Intent(this, ActivityEvent.class);
-        intent.setAction(Intent.ACTION_EDIT);
+        Intent intent = new Intent(this, ActivityUpdateEvent.class);
         event.putExtrasToIntent(intent);
-        startActivityForResult(intent, OPEN_EVENT_REQUEST);
+        startActivityForResult(intent, UPDATE_EVENT_REQUEST);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == OPEN_EVENT_REQUEST && resultCode == RESULT_OK) {
+        if ((requestCode == ADD_EVENT_REQUEST || requestCode == UPDATE_EVENT_REQUEST) && resultCode == RESULT_OK) {
             approachingEventsList = eventSPI.getAllSortedEvents(context);
         }
     }

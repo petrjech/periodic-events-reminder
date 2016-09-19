@@ -17,12 +17,12 @@ public class Event implements Comparable<Event> {
     private Boolean isFrozen;
     private List<EventLogEntry> eventLog = new ArrayList<>();
 
-    public Event(Long id, String name, String description, Integer periodicityInDays, Date nextOccurrance, Boolean isFrozen) {
+    public Event(Long id, String name, String description, Integer periodicityInDays, Date nextOccurrence, Boolean isFrozen) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.periodicityInDays = periodicityInDays;
-        this.nextOccurrence = nextOccurrance;
+        this.nextOccurrence = nextOccurrence;
         this.isFrozen = isFrozen;
     }
 
@@ -83,7 +83,6 @@ public class Event implements Comparable<Event> {
     }
 
     public final double getEventApproach() {
-        double result;
         Date today = new Date();
         long difference = nextOccurrence.getTime() - today.getTime();
         if (difference <= 0) {
