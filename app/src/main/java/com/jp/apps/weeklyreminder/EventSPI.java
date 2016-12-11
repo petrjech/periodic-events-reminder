@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface EventSPI {
 
-    void addEvent();
+    void addEvent(Event event);
+
+    boolean isEventNameUsed(String name);
 
     void updateEvent();
 

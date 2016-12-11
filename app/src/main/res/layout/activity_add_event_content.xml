@@ -1,15 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.jp.apps.weeklyreminder.ActivityAddEvent"
+    tools:context=".ActivityAddEvent"
     tools:showIn="@layout/activity_add_event">
 
-</RelativeLayout>
+    <TextView
+        style="@style/CustomFieldTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_add_event_name" />
+
+    <EditText
+        android:id="@+id/add_event_input_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        style="@style/CustomFieldTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_add_event_description" />
+
+    <EditText
+        android:id="@+id/add_event_input_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        style="@style/CustomFieldTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_add_event_periodicity" />
+
+    <EditText
+        android:id="@+id/add_event_input_periodicity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
+
+    <TextView
+        style="@style/CustomFieldTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_add_event_occurrence" />
+
+    <EditText
+        android:id="@+id/add_event_input_occurrence"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="date"/>
+
+    <CheckBox
+        android:id="@+id/add_event_checkbox_active"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_add_event_checkbox_active"
+        android:checked="true"/>
+
+    <CheckBox
+        android:id="@+id/add_event_checkbox_visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_add_event_checkbox_visible"
+        android:checked="true"/>
+
+    <Button
+        android:id="@+id/add_event_submit_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:text="@string/activity_add_event_submit_button"
+        android:onClick="onSubmitButtonClick"/>
+
+</LinearLayout>

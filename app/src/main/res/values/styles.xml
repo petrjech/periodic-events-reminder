@@ -17,4 +17,8 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="CustomFieldTitle">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
 </resources>

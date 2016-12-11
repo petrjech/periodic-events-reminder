@@ -20,7 +20,7 @@ public class ActivityMain extends AppCompatActivity {
     private final static int UPDATE_EVENT_REQUEST = 1;
 
     private List<Event> approachingEventsList = new ArrayList<>();
-    private EventSPI eventSPI = new EventSPIImpl(this);
+    private EventSPI eventSPI;
     private Context context;
 
     @Override
@@ -31,6 +31,7 @@ public class ActivityMain extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         context = this;
+        eventSPI = new EventSPIImpl(context);
         approachingEventsList = eventSPI.getAllSortedEvents(context);
         ListView approachingEventsListView = (ListView) findViewById(R.id.approaching_events_list);
         approachingEventsListView.setAdapter(new ListAdapterApproachingEvents(context, approachingEventsList));
@@ -69,7 +70,7 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void addEvent() {
-        Intent intent = new Intent(this, ActivityUpdateEvent.class);
+        Intent intent = new Intent(this, ActivityAddEvent.class);
         startActivityForResult(intent, ADD_EVENT_REQUEST);
     }
 

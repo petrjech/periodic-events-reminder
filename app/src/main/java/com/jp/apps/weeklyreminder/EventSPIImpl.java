@@ -14,8 +14,13 @@ public class EventSPIImpl implements EventSPI {
     }
 
     @Override
-    public void addEvent() {
+    public void addEvent(Event event) {
+        eventDao.saveEvent(event);
+    }
 
+    @Override
+    public boolean isEventNameUsed(String name) {
+        return eventDao.isNameUsed(name);
     }
 
     @Override

@@ -15,15 +15,25 @@ public class Event implements Comparable<Event> {
     private Integer periodicityInDays;
     private Date nextOccurrence;
     private Boolean isFrozen;
+    private Boolean isVisibleOnWidget;
     private List<EventLogEntry> eventLog = new ArrayList<>();
 
-    public Event(Long id, String name, String description, Integer periodicityInDays, Date nextOccurrence, Boolean isFrozen) {
+    public Boolean getVisibleOnWidget() {
+        return isVisibleOnWidget;
+    }
+
+    public void setVisibleOnWidget(Boolean visibleOnWidget) {
+        isVisibleOnWidget = visibleOnWidget;
+    }
+
+    public Event(Long id, String name, String description, Integer periodicityInDays, Date nextOccurrence, Boolean isFrozen, Boolean isVisibleOnWidget) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.periodicityInDays = periodicityInDays;
         this.nextOccurrence = nextOccurrence;
         this.isFrozen = isFrozen;
+        this.isVisibleOnWidget = isVisibleOnWidget;
     }
 
     public final Boolean isFrozen() {
@@ -102,6 +112,7 @@ public class Event implements Comparable<Event> {
         intent.putExtra("periodicityInDays", periodicityInDays);
         intent.putExtra("nextOccurrence", nextOccurrence.getTime());
         intent.putExtra("isFrozen", isFrozen);
+        intent.putExtra("isVisibleOnWidget", isVisibleOnWidget);
     }
 
     public static Event getEventFromIntent(Intent intent) {
@@ -111,12 +122,22 @@ public class Event implements Comparable<Event> {
         Integer periodicityInDays = intent.getIntExtra("periodicityInDays", 0);
         Date nextOccurrence = new Date(intent.getLongExtra("nextOccurrence", 0L));
         Boolean isFrozen = intent.getBooleanExtra("isFrozen", false);
+        Boolean isVisibleOnWidget = intent.getBooleanExtra("isVisibleOnWidget", false);
 
-        return new Event(id, name, description, periodicityInDays, nextOccurrence, isFrozen);
+        return new Event(id, name, description, periodicityInDays, nextOccurrence, isFrozen, isVisibleOnWidget);
     }
 
     @Override
     public int compareTo(@NonNull Event other) {
+        if (this.isFrozen() && !other.isFrozen()) {
+            return -1;
+        }
+        if (!this.isFrozen() && other.isFrozen()) {
+            return 1;
+        }
+        if (this.isFrozen() && other.isFrozen()) {
+            return this.getName().compareTo(other.getName());
+        }
         return Double.compare(this.getEventApproach(), other.getEventApproach());
     }
 
@@ -124,10 +145,12 @@ public class Event implements Comparable<Event> {
 
         private Date date;
         private EventActions action;
+        private String note;
 
-        public EventLogEntry(Date date, EventActions action) {
+        public EventLogEntry(Date date, EventActions action, String note) {
             this.date = date;
             this.action = action;
+            this.note = note;
         }
 
         public final Date getDate() {
@@ -135,6 +158,9 @@ public class Event implements Comparable<Event> {
         }
         public final EventActions getAction() {
             return action;
+        }
+        public final String getNote() {
+            return note;
         }
     }
 }

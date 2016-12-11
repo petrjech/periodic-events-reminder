@@ -25,13 +25,15 @@ public class EventDaoImpl implements EventDao {
             EVENTS_COLUMNS.IS_FROZEN.name(),
             EVENTS_COLUMNS.NAME.name(),
             EVENTS_COLUMNS.NEXT_OCCURRENCE.name(),
-            EVENTS_COLUMNS.PERIODICITY.name()
+            EVENTS_COLUMNS.PERIODICITY.name(),
+            EVENTS_COLUMNS.IS_VISIBLE_ON_WIDGET.name()
     };
 
     private static final String[] eventLogsColumns = {
             EVENT_LOGS_COLUMNS.EVENT_ID.name(),
             EVENT_LOGS_COLUMNS.ACTION.name(),
-            EVENT_LOGS_COLUMNS.DATE.name()
+            EVENT_LOGS_COLUMNS.DATE.name(),
+            EVENT_LOGS_COLUMNS.NOTE.name()
     };
 
     public EventDaoImpl(Context context) {
@@ -46,6 +48,15 @@ public class EventDaoImpl implements EventDao {
         long insertedId = db.insert(TABLES.EVENTS.name(), null, values);
         db.close();
         return insertedId;
+    }
+
+    public boolean isNameUsed(String name) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(TABLES.EVENTS.name(), new String[]{EVENTS_COLUMNS.NAME.name()}, EVENTS_COLUMNS.NAME + "=?", new String[]{name}, null, null, null, "1");
+        boolean result = cursor.getCount() > 0;
+        cursor.close();
+        db.close();
+        return result;
     }
 
     @Override
@@ -117,7 +128,10 @@ public class EventDaoImpl implements EventDao {
         index = cursor.getColumnIndexOrThrow(EVENTS_COLUMNS.IS_FROZEN.name());
         boolean isFrozen = cursor.getInt(index) == 1;
 
-        return new Event(id, name, description, periodicity, nextOccurrence, isFrozen);
+        index = cursor.getColumnIndexOrThrow(EVENTS_COLUMNS.IS_VISIBLE_ON_WIDGET.name());
+        boolean isVisibleOnWidget = cursor.getInt(index) == 1;
+
+        return new Event(id, name, description, periodicity, nextOccurrence, isFrozen, isVisibleOnWidget);
     }
 
     @Override
@@ -127,6 +141,7 @@ public class EventDaoImpl implements EventDao {
         values.put(EVENT_LOGS_COLUMNS.EVENT_ID.name(), event.getId());
         values.put(EVENT_LOGS_COLUMNS.DATE.name(), DatabaseSQLiteHelper.convertDateToString(eventLogEntry.getDate()));
         values.put(EVENT_LOGS_COLUMNS.ACTION.name(), eventLogEntry.getAction().name());
+        values.put(EVENT_LOGS_COLUMNS.NOTE.name(), eventLogEntry.getNote());
         return db.insert(TABLES.EVENT_LOGS.name(), null, values);
     }
 
@@ -165,7 +180,10 @@ public class EventDaoImpl implements EventDao {
         index = cursor.getColumnIndexOrThrow(EVENT_LOGS_COLUMNS.DATE.name());
         Date date = DatabaseSQLiteHelper.convertStringToDate(cursor.getString(index));
 
-        return event.new EventLogEntry(date, action);
+        index = cursor.getColumnIndexOrThrow(EVENT_LOGS_COLUMNS.NOTE.name());
+        String note = cursor.getString(index);
+
+        return event.new EventLogEntry(date, action, note);
     }
 
     @NonNull
@@ -176,6 +194,7 @@ public class EventDaoImpl implements EventDao {
         values.put(EVENTS_COLUMNS.IS_FROZEN.name(), event.isFrozen());
         values.put(EVENTS_COLUMNS.NEXT_OCCURRENCE.name(), DatabaseSQLiteHelper.convertDateToString(event.getNextOccurrence()));
         values.put(EVENTS_COLUMNS.PERIODICITY.name(), event.getPeriodicityInDays());
+        values.put(EVENTS_COLUMNS.IS_VISIBLE_ON_WIDGET.name(), event.getVisibleOnWidget());
         return values;
     }
 }

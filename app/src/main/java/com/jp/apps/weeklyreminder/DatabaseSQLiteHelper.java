@@ -23,11 +23,11 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
     }
 
     public enum EVENTS_COLUMNS {
-        EVENT_ID, NAME, DESCRIPTION, PERIODICITY, NEXT_OCCURRENCE, IS_FROZEN
+        EVENT_ID, NAME, DESCRIPTION, PERIODICITY, NEXT_OCCURRENCE, IS_FROZEN, IS_VISIBLE_ON_WIDGET
     }
 
     public enum EVENT_LOGS_COLUMNS {
-        EVENT_ID, DATE, ACTION
+        EVENT_ID, DATE, ACTION, NOTE
     }
 
     private static DatabaseSQLiteHelper instance;
@@ -64,6 +64,7 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
                 + EVENTS_COLUMNS.PERIODICITY.name()   + " INTEGER NOT NULL,"
                 + EVENTS_COLUMNS.NEXT_OCCURRENCE.name() + " TEXT NOT NULL,"
                 + EVENTS_COLUMNS.IS_FROZEN.name()     + " INTEGER NOT NULL,"
+                + EVENTS_COLUMNS.IS_VISIBLE_ON_WIDGET.name() + " TEXT"
                 + ");";
     }
 
@@ -72,6 +73,7 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
                 + EVENT_LOGS_COLUMNS.EVENT_ID.name()  + " INTEGER NOT NULL,"
                 + EVENT_LOGS_COLUMNS.DATE.name()      + " TEXT NOT NULL,"
                 + EVENT_LOGS_COLUMNS.ACTION.name() + " TEXT NOT NULL,"
+                + EVENT_LOGS_COLUMNS.NOTE.name() + " TEXT,"
                 + "FOREIGN KEY(" + EVENT_LOGS_COLUMNS.EVENT_ID.name() + ") REFERENCES EVENTS(" + EVENTS_COLUMNS.EVENT_ID.name() + ")"
                 + ");";
     }

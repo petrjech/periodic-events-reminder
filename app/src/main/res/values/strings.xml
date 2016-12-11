@@ -3,6 +3,18 @@
     <string name="action_settings">Settings</string>
     <string name="activity_main_approaching_events_list_item_button">UPDATE</string>
     <string name="activity_main_menu_add_event">"Add Event"</string>
+    <string name="activity_add_event_checkbox_active">"Is active"</string>
+    <string name="activity_add_event_checkbox_visible">"Show on widget"</string>
+    <string name="activity_add_event_description">"Description:"</string>
+    <string name="activity_add_event_error_date">"Next occurrence has to be today or future date."</string>
+    <string name="activity_add_event_error_date_format">"Next occurrence Date has to be in format: "</string>
+    <string name="activity_add_event_error_no_name">"Event name is mandatory."</string>
+    <string name="activity_add_event_error_name_exists">"Event of this name already exists."</string>
+    <string name="activity_add_event_error_periodicity">"Periodicity has to be number from 1 to 9999 days."</string>
+    <string name="activity_add_event_name">"Name:"</string>
+    <string name="activity_add_event_occurrence">"First occurrence:"</string>
+    <string name="activity_add_event_periodicity">"Periodicity in days:"</string>
+    <string name="activity_add_event_submit_button">"Submit"</string>
     <string name="activity_add_event_title">"Add Event"</string>
     <string name="activity_update_event_title">"Update Event"</string>
 </resources>

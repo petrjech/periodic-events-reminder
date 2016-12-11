@@ -6,6 +6,8 @@ public interface EventDao {
 
     long saveEvent(Event event);
 
+    boolean isNameUsed(String name);
+
     boolean updateEvent(Event event);
 
     boolean deleteEvent(Event event);
