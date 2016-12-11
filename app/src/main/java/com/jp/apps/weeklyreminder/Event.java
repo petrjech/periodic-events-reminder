@@ -92,17 +92,18 @@ public class Event implements Comparable<Event> {
         this.eventLog = eventLog;
     }
 
-    public final double getEventApproach() {
+    public final float getEventApproach() {
         Date today = new Date();
         long difference = nextOccurrence.getTime() - today.getTime();
         if (difference <= 0) {
-            return 1;
+            return 1f;
         }
         long periodicityInMilliseconds = periodicityInDays * 24 * 60 * 60 * 1000;
         if (periodicityInMilliseconds <= difference) {
-            return 0;
+            return 0f;
         }
-        return  ((double) periodicityInMilliseconds - difference) / periodicityInMilliseconds;
+        float result = ((float) periodicityInMilliseconds - difference) / periodicityInMilliseconds;
+        return  result;
     }
 
     public void putExtrasToIntent(Intent intent) {
@@ -130,15 +131,15 @@ public class Event implements Comparable<Event> {
     @Override
     public int compareTo(@NonNull Event other) {
         if (this.isFrozen() && !other.isFrozen()) {
-            return -1;
+            return 1;
         }
         if (!this.isFrozen() && other.isFrozen()) {
-            return 1;
+            return -1;
         }
         if (this.isFrozen() && other.isFrozen()) {
             return this.getName().compareTo(other.getName());
         }
-        return Double.compare(this.getEventApproach(), other.getEventApproach());
+        return Double.compare(other.getEventApproach(), this.getEventApproach());
     }
 
     class EventLogEntry {

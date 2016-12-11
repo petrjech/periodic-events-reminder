@@ -20,6 +20,7 @@ public class ActivityMain extends AppCompatActivity {
     private final static int UPDATE_EVENT_REQUEST = 1;
 
     private List<Event> approachingEventsList = new ArrayList<>();
+    private ListAdapterApproachingEvents listAdapterApproachingEvents;
     private EventSPI eventSPI;
     private Context context;
 
@@ -34,7 +35,8 @@ public class ActivityMain extends AppCompatActivity {
         eventSPI = new EventSPIImpl(context);
         approachingEventsList = eventSPI.getAllSortedEvents(context);
         ListView approachingEventsListView = (ListView) findViewById(R.id.approaching_events_list);
-        approachingEventsListView.setAdapter(new ListAdapterApproachingEvents(context, approachingEventsList));
+        listAdapterApproachingEvents = new ListAdapterApproachingEvents(context, approachingEventsList);
+        approachingEventsListView.setAdapter(listAdapterApproachingEvents);
 
         approachingEventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -88,6 +90,7 @@ public class ActivityMain extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if ((requestCode == ADD_EVENT_REQUEST || requestCode == UPDATE_EVENT_REQUEST) && resultCode == RESULT_OK) {
             approachingEventsList = eventSPI.getAllSortedEvents(context);
+            listAdapterApproachingEvents.notifyDataSetChanged();
         }
     }
 }

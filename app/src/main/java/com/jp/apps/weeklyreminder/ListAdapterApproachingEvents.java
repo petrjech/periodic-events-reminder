@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.List;
@@ -16,10 +15,12 @@ public class ListAdapterApproachingEvents extends BaseAdapter {
 
     private List<Event> approachingEvents;
     private LayoutInflater mInflater;
+    private Context context;
 
     ListAdapterApproachingEvents(Context context, List<Event> approachingEvents) {
         this.approachingEvents = approachingEvents;
         mInflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
     @Override
@@ -67,8 +68,16 @@ public class ListAdapterApproachingEvents extends BaseAdapter {
             TextView name = (TextView) approachingEventsListItem.findViewById(R.id.event_list_item_name);
             name.setText(event.getName());
 
-            ProgressBar progressBar = (ProgressBar) approachingEventsListItem.findViewById(R.id.event_list_item_progress);
-            progressBar.setProgress((int) (event.getEventApproach() * 100));
+            View leftProgress = approachingEventsListItem.findViewById(R.id.event_list_item_progress_left);
+            float progress = event.getEventApproach();
+            int height = (int) context.getResources().getDimension(R.dimen.event_list_progress_height);
+            LinearLayout.LayoutParams paramsLeft = new LinearLayout.LayoutParams(1, height);
+            paramsLeft.weight = progress;
+            leftProgress.setLayoutParams(paramsLeft);
+            View rightProgress = approachingEventsListItem.findViewById(R.id.event_list_item_progress_right);
+            LinearLayout.LayoutParams paramsRight = new LinearLayout.LayoutParams(1, height);
+            paramsRight.weight = 1 - progress;
+            rightProgress.setLayoutParams(paramsRight);
         }
     }
 }
