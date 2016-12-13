@@ -102,8 +102,7 @@ public class Event implements Comparable<Event> {
         if (periodicityInMilliseconds <= difference) {
             return 0f;
         }
-        float result = ((float) periodicityInMilliseconds - difference) / periodicityInMilliseconds;
-        return  result;
+        return ((float) periodicityInMilliseconds - difference) / periodicityInMilliseconds;
     }
 
     public void putExtrasToIntent(Intent intent) {

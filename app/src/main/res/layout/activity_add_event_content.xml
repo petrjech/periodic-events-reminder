@@ -59,19 +59,27 @@
         android:layout_height="wrap_content"
         android:inputType="date"/>
 
-    <CheckBox
-        android:id="@+id/add_event_checkbox_active"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/activity_add_event_checkbox_active"
-        android:checked="true"/>
+        android:layout_height="wrap_content">
 
-    <CheckBox
-        android:id="@+id/add_event_checkbox_visible"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/activity_add_event_checkbox_visible"
-        android:checked="true"/>
+        <CheckBox
+            android:id="@+id/add_event_checkbox_active"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:checked="true"
+            android:text="@string/activity_add_event_checkbox_active" />
+
+        <CheckBox
+            android:id="@+id/add_event_checkbox_visible"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:checked="true"
+            android:text="@string/activity_add_event_checkbox_visible" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/add_event_submit_button"

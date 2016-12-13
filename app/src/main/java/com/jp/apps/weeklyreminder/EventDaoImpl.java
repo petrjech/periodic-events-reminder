@@ -155,13 +155,41 @@ public class EventDaoImpl implements EventDao {
                 EVENT_LOGS_COLUMNS.EVENT_ID + " = ?",
                 new String[] {"" + event.getId()},
                 null, null,
-                EVENT_LOGS_COLUMNS.DATE.name() + "DESC",
+                EVENT_LOGS_COLUMNS.DATE.name() + " DESC",
                 Parameters.QUERY_EVENT_LOGS_LIMIT);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             try {
                 result.add(cursorToEventLog(cursor, event));
+            } catch (ParseException e) {
+                throw new RuntimeException("Database parse error", e);
+            }
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        db.close();
+        return result;
+    }
+
+    @Override
+    public Event.EventLogEntry getLastEventLog(Event event) {
+        Event.EventLogEntry result = null;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query(
+                TABLES.EVENT_LOGS.name(),
+                eventLogsColumns,
+                EVENT_LOGS_COLUMNS.EVENT_ID + " = ?",
+                new String[] {"" + event.getId()},
+                null, null,
+                EVENT_LOGS_COLUMNS.DATE.name() + " DESC",
+                "1");
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            try {
+                result = cursorToEventLog(cursor, event);
             } catch (ParseException e) {
                 throw new RuntimeException("Database parse error", e);
             }

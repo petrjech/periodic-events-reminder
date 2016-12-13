@@ -64,4 +64,9 @@ public class EventSPIImpl implements EventSPI {
     public void getEventLogs(Context context, Event event) {
         event.setEventLog(eventDao.getEventLogs(event));
     }
+
+    @Override
+    public Event.EventLogEntry getLastEventLog(Context context, Event event) {
+        return eventDao.getLastEventLog(event);
+    }
 }

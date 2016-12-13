@@ -25,4 +25,6 @@ public interface EventSPI {
     List<Event> getAllSortedEvents(Context context);
 
     void getEventLogs(Context context, Event event);
+
+    Event.EventLogEntry getLastEventLog(Context context, Event event);
 }

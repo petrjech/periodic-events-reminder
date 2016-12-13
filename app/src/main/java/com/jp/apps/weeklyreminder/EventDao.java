@@ -17,4 +17,6 @@ public interface EventDao {
     long saveEventToLog(Event event, Event.EventLogEntry eventLogEntry);
 
     List<Event.EventLogEntry> getEventLogs(Event event);
+
+    Event.EventLogEntry getLastEventLog(Event event);
 }
