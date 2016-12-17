@@ -19,10 +19,9 @@ public class ActivityMain extends AppCompatActivity {
     private final static int ADD_EVENT_REQUEST = 0;
     private final static int UPDATE_EVENT_REQUEST = 1;
 
-    private List<Event> approachingEventsList = new ArrayList<>();
+    private final List<Event> approachingEventsList = new ArrayList<>();
     private ListAdapterApproachingEvents listAdapterApproachingEvents;
-    private EventSPI eventSPI;
-    private Context context;
+    private EventDao eventDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +30,12 @@ public class ActivityMain extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        context = this;
-        eventSPI = new EventSPIImpl(context);
-        approachingEventsList = eventSPI.getAllSortedEvents(context);
+        initialize(this);
+
+        eventDao = Parameters.getEventDao();
+        approachingEventsList.addAll(eventDao.getAllSortedEvents());
         ListView approachingEventsListView = (ListView) findViewById(R.id.approaching_events_list);
-        listAdapterApproachingEvents = new ListAdapterApproachingEvents(context, approachingEventsList);
+        listAdapterApproachingEvents = new ListAdapterApproachingEvents(this, approachingEventsList);
         approachingEventsListView.setAdapter(listAdapterApproachingEvents);
 
         approachingEventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -44,6 +44,10 @@ public class ActivityMain extends AppCompatActivity {
                 openEventActivity(event);
             }
         });
+    }
+
+    private void initialize(Context context) {
+        Parameters.setEventDao(new EventDaoImpl(context));
     }
 
     @Override
@@ -89,7 +93,8 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if ((requestCode == ADD_EVENT_REQUEST || requestCode == UPDATE_EVENT_REQUEST) && resultCode == RESULT_OK) {
-            approachingEventsList = eventSPI.getAllSortedEvents(context);
+            approachingEventsList.clear();
+            approachingEventsList.addAll(eventDao.getAllSortedEvents());
             listAdapterApproachingEvents.notifyDataSetChanged();
         }
     }

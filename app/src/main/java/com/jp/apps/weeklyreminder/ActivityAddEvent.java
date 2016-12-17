@@ -18,7 +18,7 @@ import java.util.Date;
 public class ActivityAddEvent extends AppCompatActivity {
 
     private Event event = new Event(null, null, null, null, null, null, null);
-    private EventSPI eventSPI;
+    private EventDao eventDao;
     private Context context;
 
     @Override
@@ -29,7 +29,7 @@ public class ActivityAddEvent extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         context = this;
-        eventSPI = new EventSPIImpl(this);
+        eventDao = Parameters.getEventDao();
 
         setOccurrenceDate();
     }
@@ -64,7 +64,8 @@ public class ActivityAddEvent extends AppCompatActivity {
         if (!setEvent()) {
             return;
         }
-        eventSPI.addEvent(event);
+
+        eventDao.saveEvent(event);
 
         Intent intent = new Intent();
         setResult(RESULT_OK, intent);
@@ -78,22 +79,12 @@ public class ActivityAddEvent extends AppCompatActivity {
     }
 
     private boolean setEvent() {
-        if (!setName()) {
-            return false;
-        }
-        if (!setDescription()) {
-            return false;
-        }
-        if (!setPeriodicity()) {
-            return false;
-        }
-        if (!setNextOccurrence()) {
-            return false;
-        }
-        if (!setIsFrozen()) {
-            return false;
-        }
-        return setVisibleOnWidget();
+        return setName()
+                && setDescription()
+                && setPeriodicity()
+                && setNextOccurrence()
+                && setIsFrozen()
+                && setVisibleOnWidget();
     }
 
     private boolean setName() {
@@ -103,7 +94,7 @@ public class ActivityAddEvent extends AppCompatActivity {
             showErrorToast(getString(R.string.activity_add_event_error_no_name));
             return false;
         }
-        if (eventSPI.isEventNameUsed(name)) {
+        if (eventDao.isNameUsed(name)) {
             showErrorToast(getString(R.string.activity_add_event_error_name_exists));
             return false;
         }

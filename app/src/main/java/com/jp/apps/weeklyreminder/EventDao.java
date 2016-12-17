@@ -12,7 +12,7 @@ public interface EventDao {
 
     boolean deleteEvent(Event event);
 
-    List<Event> getAllEvents();
+    List<Event> getAllSortedEvents();
 
     long saveEventToLog(Event event, Event.EventLogEntry eventLogEntry);
 

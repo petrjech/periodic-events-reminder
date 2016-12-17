@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -89,7 +90,7 @@ public class EventDaoImpl implements EventDao {
     }
 
     @Override
-    public List<Event> getAllEvents() {
+    public List<Event> getAllSortedEvents() {
         List<Event> result = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query(TABLES.EVENTS.name(), eventsColumns, null, null, null, null, null, null);
@@ -106,6 +107,8 @@ public class EventDaoImpl implements EventDao {
 
         cursor.close();
         db.close();
+
+        Collections.sort(result);
         return result;
     }
 

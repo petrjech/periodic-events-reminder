@@ -9,8 +9,18 @@ public class Parameters {
     public final static String DATE_FORMAT_STRING = "d.M.yyyy";
     public final static SimpleDateFormat DATE_FORMAT;
 
+    private static EventDao eventDao;
+
     static {
         DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_STRING, Locale.US);
         DATE_FORMAT.setLenient(false);
+    }
+
+    public static void setEventDao(EventDao aEventDao) {
+        eventDao = aEventDao;
+    }
+
+    public static EventDao getEventDao() {
+        return eventDao;
     }
 }
