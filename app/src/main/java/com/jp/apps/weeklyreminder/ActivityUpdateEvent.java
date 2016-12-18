@@ -15,7 +15,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class ActivityUpdateEvent extends AppCompatActivity {
-
+    //TODO do better (localized) history view
+    //TODO save postpone days to log?
     private Event event;
     private Event.EventLogEntry lastEventLog;
     private EventDao eventDao;
@@ -65,10 +66,18 @@ public class ActivityUpdateEvent extends AppCompatActivity {
 
     public void onAccomplishedButtonClick(View view) {
         //TODO what about frozen events?
-        showConfirmationDialog();
+        showAccomplishConfirmationDialog();
     }
 
-    private void showConfirmationDialog() {
+    public void onSkipButtonClick(View view) {
+        showSkipConfirmationDialog();
+    }
+
+    public void onPostponeButtonClick(View view) {
+        showPostponeConfirmationDialog();
+    }
+
+    private void showAccomplishConfirmationDialog() {
         final Date nextOccurrence = addDays(new Date(), event.getPeriodicityInDays());
         String newDate = Parameters.DATE_FORMAT.format(nextOccurrence);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -92,6 +101,62 @@ public class ActivityUpdateEvent extends AppCompatActivity {
         builder.show();
     }
 
+    private void showSkipConfirmationDialog() {
+        final Date nextOccurrence = addDays(new Date(), event.getPeriodicityInDays());
+        String newDate = Parameters.DATE_FORMAT.format(nextOccurrence);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.activity_update_event_skip_dialog_title);
+        builder.setMessage(getString(R.string.activity_update_event_skip_dialog_text) + newDate + "?");
+        builder.setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                event.setNextOccurrence(nextOccurrence);
+                skipEvent();
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+        builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.setIcon(android.R.drawable.ic_menu_help);
+        builder.show();
+    }
+
+    private void showPostponeConfirmationDialog() {
+        EditText postponeDaysView = (EditText) findViewById(R.id.update_event_input_days);
+        int postponeDays = 0;
+        try {
+            String postponeDaysString = postponeDaysView.getText().toString();
+            postponeDays = Integer.valueOf(postponeDaysString);
+        } catch (NumberFormatException e) {
+            //TODO return error toast
+        }
+        final Date nextOccurrence = addDays(event.getNextOccurrence(), postponeDays);
+        String newDate = Parameters.DATE_FORMAT.format(nextOccurrence);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.activity_update_event_postpone_dialog_title);
+        builder.setMessage(getString(R.string.activity_update_event_postpone_dialog_text) + newDate + "?");
+        builder.setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                event.setNextOccurrence(nextOccurrence);
+                postponeEvent();
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+        builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.setIcon(android.R.drawable.ic_menu_help);
+        builder.show();
+    }
+
     private void accomplishEvent() {
         eventDao.updateEvent(event);
         EditText noteView = (EditText) findViewById(R.id.update_event_input_note);
@@ -99,6 +164,23 @@ public class ActivityUpdateEvent extends AppCompatActivity {
         Event.EventLogEntry eventLogEntry = event.new EventLogEntry(new Date(), EventActions.FULFILL, note);
         eventDao.saveEventToLog(event, eventLogEntry);
     }
+
+    private void skipEvent() {
+        eventDao.updateEvent(event);
+        EditText noteView = (EditText) findViewById(R.id.update_event_input_note);
+        String note = noteView.getText().toString();
+        Event.EventLogEntry eventLogEntry = event.new EventLogEntry(new Date(), EventActions.SKIP, note);
+        eventDao.saveEventToLog(event, eventLogEntry);
+    }
+
+    private void postponeEvent() {
+        eventDao.updateEvent(event);
+        EditText noteView = (EditText) findViewById(R.id.update_event_input_note);
+        String note = noteView.getText().toString();
+        Event.EventLogEntry eventLogEntry = event.new EventLogEntry(new Date(), EventActions.POSTPONE, note);
+        eventDao.saveEventToLog(event, eventLogEntry);
+    }
+
 
     private Date addDays(Date date, int days) {
         Calendar calendar = Calendar.getInstance();

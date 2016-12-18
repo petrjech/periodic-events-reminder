@@ -18,6 +18,8 @@ public class Event implements Comparable<Event> {
     private Boolean isVisibleOnWidget;
     private List<EventLogEntry> eventLog = new ArrayList<>();
 
+    private long millisecondsPerDay = 86400000L;
+
     public Boolean getVisibleOnWidget() {
         return isVisibleOnWidget;
     }
@@ -98,11 +100,12 @@ public class Event implements Comparable<Event> {
         if (difference <= 0) {
             return 1f;
         }
-        long periodicityInMilliseconds = periodicityInDays * 24 * 60 * 60 * 1000;
+        long periodicityInMilliseconds = periodicityInDays * millisecondsPerDay;
         if (periodicityInMilliseconds <= difference) {
             return 0f;
         }
-        return ((float) periodicityInMilliseconds - difference) / periodicityInMilliseconds;
+        float result = 1 - (((float) difference) / periodicityInMilliseconds);
+        return result;
     }
 
     public void putExtrasToIntent(Intent intent) {

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityMain extends AppCompatActivity {
+    //TODO introduce event categories and category filtering?
 
     private final static int ADD_EVENT_REQUEST = 0;
     private final static int UPDATE_EVENT_REQUEST = 1;

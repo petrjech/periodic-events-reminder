@@ -95,8 +95,6 @@
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
         android:text="@string/activity_update_event_change_event_button"
-        android:onClick="onHistoryButtonClick"/>
-
-    <!--todo change strings from add event to update event -->
+        android:onClick="onChangeEventButtonClick"/>
 
 </LinearLayout>

@@ -21,6 +21,10 @@
     <string name="activity_update_event_accomplished_button">"Event Accomplished"</string>
     <string name="activity_update_event_accomplished_dialog_text">"Accomplish event and set new one to: "</string>
     <string name="activity_update_event_accomplished_dialog_title">"Accomplish confirmation"</string>
+    <string name="activity_update_event_skip_dialog_text">"Skip event and set new one to: "</string>
+    <string name="activity_update_event_skip_dialog_title">"Skip confirmation"</string>
+    <string name="activity_update_event_postpone_dialog_text">"Postpone event and set new date to: "</string>
+    <string name="activity_update_event_postpone_dialog_title">"Postpone confirmation"</string>
     <string name="activity_update_event_change_event_button">"Change event properties"</string>
     <string name="activity_update_event_no_last_action">"No event history yet"</string>
     <string name="activity_update_event_postpone_button">"Postpone Event"</string>
