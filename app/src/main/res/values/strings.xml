@@ -26,11 +26,15 @@
     <string name="activity_update_event_postpone_dialog_text">"Postpone event and set new date to: "</string>
     <string name="activity_update_event_postpone_dialog_title">"Postpone confirmation"</string>
     <string name="activity_update_event_change_event_button">"Change event properties"</string>
+    <string name="activity_update_event_last_action_title">"Last action:"</string>
     <string name="activity_update_event_no_last_action">"No event history yet"</string>
     <string name="activity_update_event_postpone_button">"Postpone Event"</string>
     <string name="activity_update_event_postpone_days">"Days to postpone:"</string>
     <string name="activity_update_event_skip_button">"Skip Event"</string>
     <string name="activity_update_event_show_full_history_button">"Show full history"</string>
+    <string name="activity_event_history_action_accomplished">"Accomplished"</string>
+    <string name="activity_event_history_action_postponed">"Postponed"</string>
+    <string name="activity_event_history_action_skipped">"Skipped"</string>
     <string name="dialog_cancel">"Cancel"</string>
     <string name="dialog_ok">"OK"</string>
 </resources>

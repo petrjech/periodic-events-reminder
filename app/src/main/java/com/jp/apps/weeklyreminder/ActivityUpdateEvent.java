@@ -49,19 +49,41 @@ public class ActivityUpdateEvent extends AppCompatActivity {
             descriptionView.setText(event.getDescription());
         }
 
-        TextView lastActionView = (TextView) findViewById(R.id.update_event_last_action);
+        TextView lastActionDateView = (TextView) findViewById(R.id.update_event_last_action_date);
+        TextView lastActionNoteView = (TextView) findViewById(R.id.update_event_last_action_note);
+        TextView lastActionActionView = (TextView) findViewById(R.id.update_event_last_action_action);
         if (lastEventLog == null) {
-            lastActionView.setText(context.getResources().getString(R.string.activity_update_event_no_last_action));
+            lastActionDateView.setText(context.getResources().getString(R.string.activity_update_event_no_last_action));
+            lastActionNoteView.setVisibility(View.GONE);
         } else {
-            lastActionView.setText(lastEventLog.getNote() + "\n" + Parameters.DATE_FORMAT.format(lastEventLog.getDate()) + "\n" + lastEventLog.getAction().name());
+            lastActionDateView.setText(Parameters.DATE_FORMAT.format(lastEventLog.getDate()));
+            lastActionDateView.setText(Parameters.DATE_FORMAT.format(lastEventLog.getDate()));
+            lastActionActionView.setText(getActionText(lastEventLog.getAction()));
+            if (lastEventLog.getNote().isEmpty()) {
+                lastActionNoteView.setVisibility(View.GONE);
+            } else {
+                lastActionNoteView.setVisibility(View.VISIBLE);
+                lastActionNoteView.setText(lastEventLog.getNote());
+            }
         }
-        // todo setup proper view
 
         TextView nextOccurrenceView = (TextView) findViewById(R.id.update_event_next_occurrence);
         nextOccurrenceView.setText(Parameters.DATE_FORMAT.format(event.getNextOccurrence()));
 
         TextView periodicityView = (TextView) findViewById(R.id.update_event_periodicity);
         periodicityView.setText(Integer.toString(event.getPeriodicityInDays()));
+    }
+
+    private String getActionText(EventActions eventAction) {
+        switch (eventAction) {
+            case FULFILL:
+                return getString(R.string.activity_event_history_action_accomplished);
+            case POSTPONE:
+                return getString(R.string.activity_event_history_action_postponed);
+            case SKIP:
+                return getString(R.string.activity_event_history_action_skipped);
+        }
+        return "";
     }
 
     public void onAccomplishedButtonClick(View view) {

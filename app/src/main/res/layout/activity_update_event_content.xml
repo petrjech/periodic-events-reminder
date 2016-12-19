@@ -23,10 +23,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/update_event_last_action"
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_update_event_last_action_title" />
+
+            <TextView
+                android:id="@+id/update_event_last_action_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5.0dp" />
+
+            <TextView
+                android:id="@+id/update_event_last_action_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5.0dp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/update_event_last_action_note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5.0dp"
+                android:layout_column="1" />
+        </TableRow>
+    </TableLayout>
 
     <TextView
         android:id="@+id/update_event_next_occurrence"
