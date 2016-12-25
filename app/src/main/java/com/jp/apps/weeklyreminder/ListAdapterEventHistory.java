@@ -67,11 +67,11 @@ public class ListAdapterEventHistory extends BaseAdapter {
             TextView dateView = (TextView) eventHistoryListItemView.findViewById(R.id.events_history_list_item_date);
             TextView actionView = (TextView) eventHistoryListItemView.findViewById(R.id.events_history_list_item_action);
             TextView noteVIew = (TextView) eventHistoryListItemView.findViewById(R.id.events_history_list_item_note);
-            View colorView = (View) eventHistoryListItemView.findViewById(R.id.events_history_list_item_color);
+            View colorView = eventHistoryListItemView.findViewById(R.id.events_history_list_item_color);
 
             dateView.setText(Parameters.DATE_FORMAT.format(eventLogEntry.getDate()));
-            actionView.setText(getActionText(eventLogEntry.getAction()));
-            colorView.setBackgroundColor(getActionColor(eventLogEntry.getAction()));
+            actionView.setText(Commons.getActionText(context, eventLogEntry.getAction()));
+            colorView.setBackgroundColor(Commons.getActionColor(context, eventLogEntry.getAction()));
 
             if (eventLogEntry.getNote().isEmpty()) {
                 noteVIew.setVisibility(View.GONE);
@@ -80,30 +80,5 @@ public class ListAdapterEventHistory extends BaseAdapter {
                 noteVIew.setText(eventLogEntry.getNote());
             }
         }
-    }
-
-    //TODO make one method for activityUpdateEvent and this
-    private String getActionText(EventActions eventAction) {
-        switch (eventAction) {
-            case FULFILL:
-                return context.getString(R.string.activity_event_history_action_accomplished);
-            case POSTPONE:
-                return context.getString(R.string.activity_event_history_action_postponed);
-            case SKIP:
-                return context.getString(R.string.activity_event_history_action_skipped);
-        }
-        return "";
-    }
-
-    private int getActionColor(EventActions eventAction) {
-        switch (eventAction) {
-            case FULFILL:
-                return context.getResources().getColor(R.color.colorEventHistoryActionAccomplished);
-            case POSTPONE:
-                return context.getResources().getColor(R.color.colorEventHistoryActionPostponed);
-            case SKIP:
-                return context.getResources().getColor(R.color.colorEventHistoryActionSkipped);
-        }
-        return 0;
     }
 }

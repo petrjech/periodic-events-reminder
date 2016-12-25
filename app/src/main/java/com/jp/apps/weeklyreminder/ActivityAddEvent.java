@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -91,11 +90,11 @@ public class ActivityAddEvent extends AppCompatActivity {
         EditText editTextName = (EditText) findViewById(R.id.add_event_input_name);
         String name = editTextName.getText().toString();
         if (name.isEmpty()) {
-            showErrorToast(getString(R.string.activity_add_event_error_no_name));
+            Commons.showErrorToast(context, getString(R.string.activity_add_event_error_no_name));
             return false;
         }
         if (eventDao.isNameUsed(name)) {
-            showErrorToast(getString(R.string.activity_add_event_error_name_exists));
+            Commons.showErrorToast(context, getString(R.string.activity_add_event_error_name_exists));
             return false;
         }
         event.setName(name);
@@ -126,7 +125,7 @@ public class ActivityAddEvent extends AppCompatActivity {
             }
         }
         if (!isPeriodicityValid || periodicity < 1) {
-            showErrorToast(getString(R.string.activity_add_event_error_periodicity));
+            Commons.showErrorToast(context, getString(R.string.activity_add_event_error_periodicity));
             return false;
         }
         event.setPeriodicityInDays(periodicity);
@@ -140,11 +139,11 @@ public class ActivityAddEvent extends AppCompatActivity {
         try {
             nextOccurrence = Parameters.DATE_FORMAT.parse(nextOccurrenceString);
         } catch (ParseException e) {
-            showErrorToast(getString(R.string.activity_add_event_error_date_format) + Parameters.DATE_FORMAT_STRING);
+            Commons.showErrorToast(context, getString(R.string.activity_add_event_error_date_format) + Parameters.DATE_FORMAT_STRING);
             return false;
         }
         if (nextOccurrence.compareTo(new Date()) < 1) {
-            showErrorToast(getString(R.string.activity_add_event_error_date));
+            Commons.showErrorToast(context, getString(R.string.activity_add_event_error_date));
             return false;
         }
         event.setNextOccurrence(nextOccurrence);
@@ -161,10 +160,5 @@ public class ActivityAddEvent extends AppCompatActivity {
         CheckBox checkboxVisible = (CheckBox) findViewById(R.id.add_event_checkbox_visible);
         event.setVisibleOnWidget(checkboxVisible.isChecked());
         return true;
-    }
-
-    private void showErrorToast(String message) {
-        Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
-        toast.show();
     }
 }

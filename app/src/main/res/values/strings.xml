@@ -21,6 +21,7 @@
     <string name="activity_update_event_accomplished_button">"Event Accomplished"</string>
     <string name="activity_update_event_accomplished_dialog_text">"Accomplish event and set new one to: "</string>
     <string name="activity_update_event_accomplished_dialog_title">"Accomplish confirmation"</string>
+    <string name="activity_update_event_error_postpone_days">"Days has to be number from 1 to 9999 days."</string>
     <string name="activity_update_event_skip_dialog_text">"Skip event and set new one to: "</string>
     <string name="activity_update_event_skip_dialog_title">"Skip confirmation"</string>
     <string name="activity_update_event_postpone_dialog_text">"Postpone event and set new date to: "</string>

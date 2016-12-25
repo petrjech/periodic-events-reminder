@@ -15,8 +15,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class ActivityUpdateEvent extends AppCompatActivity {
-    //TODO do better (localized) history view
-    //TODO save postpone days to log?
     private Event event;
     private Event.EventLogEntry lastEventLog;
     private EventDao eventDao;
@@ -70,7 +68,7 @@ public class ActivityUpdateEvent extends AppCompatActivity {
         nextOccurrenceView.setText(Parameters.DATE_FORMAT.format(event.getNextOccurrence()));
 
         TextView periodicityView = (TextView) findViewById(R.id.update_event_periodicity);
-        periodicityView.setText(Integer.toString(event.getPeriodicityInDays()));
+        periodicityView.setText(String.valueOf(event.getPeriodicityInDays()));
     }
 
     private String getActionText(EventActions eventAction) {
@@ -158,8 +156,9 @@ public class ActivityUpdateEvent extends AppCompatActivity {
         try {
             String postponeDaysString = postponeDaysView.getText().toString();
             postponeDays = Integer.valueOf(postponeDaysString);
-        } catch (NumberFormatException e) {
-            //TODO return error toast
+        } catch (NumberFormatException ignore) {}
+        if (postponeDays < 1 || postponeDays > 9999) {
+            Commons.showErrorToast(context, getString(R.string.activity_update_event_error_postpone_days));
         }
         final Date nextOccurrence = addDays(event.getNextOccurrence(), postponeDays);
         String newDate = Parameters.DATE_FORMAT.format(nextOccurrence);
