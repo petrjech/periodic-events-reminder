@@ -57,7 +57,6 @@ public class ActivityUpdateEvent extends AppCompatActivity {
             lastActionNoteView.setVisibility(View.GONE);
         } else {
             lastActionDateView.setText(Parameters.DATE_FORMAT.format(lastEventLog.getDate()));
-            lastActionDateView.setText(Parameters.DATE_FORMAT.format(lastEventLog.getDate()));
             lastActionActionView.setText(getActionText(lastEventLog.getAction()));
             if (lastEventLog.getNote().isEmpty()) {
                 lastActionNoteView.setVisibility(View.GONE);
@@ -97,6 +96,12 @@ public class ActivityUpdateEvent extends AppCompatActivity {
 
     public void onPostponeButtonClick(View view) {
         showPostponeConfirmationDialog();
+    }
+
+    public void onHistoryButtonClick(View view) {
+        Intent intent = new Intent(this, ActivityEventHistory.class);
+        event.putExtrasToIntent(intent);
+        startActivity(intent);
     }
 
     private void showAccomplishConfirmationDialog() {

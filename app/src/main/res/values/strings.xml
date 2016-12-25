@@ -37,4 +37,5 @@
     <string name="activity_event_history_action_skipped">"Skipped"</string>
     <string name="dialog_cancel">"Cancel"</string>
     <string name="dialog_ok">"OK"</string>
+    <string name="title_activity_activity_event_history">ActivityEventHistory</string>
 </resources>

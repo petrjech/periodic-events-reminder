@@ -38,6 +38,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.jp.apps.weeklyreminder.ActivityMain" />
         </activity>
+        <activity
+            android:name=".ActivityEventHistory"
+            android:label="@string/title_activity_activity_event_history"
+            android:parentActivityName=".ActivityUpdateEvent"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jp.apps.weeklyreminder.ActivityUpdateEvent" />
+        </activity>
     </application>
 
 </manifest>
