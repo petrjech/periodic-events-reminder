@@ -120,11 +120,11 @@
         android:onClick="onHistoryButtonClick"/>
 
     <Button
-        android:id="@+id/update_event_change_event_button"
+        android:id="@+id/update_event_modify_event_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
-        android:text="@string/activity_update_event_change_event_button"
-        android:onClick="onChangeEventButtonClick"/>
+        android:text="@string/activity_update_event_modify_event_button"
+        android:onClick="onModifyButtonClick"/>
 
 </LinearLayout>

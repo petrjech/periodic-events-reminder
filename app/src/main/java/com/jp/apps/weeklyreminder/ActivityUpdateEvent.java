@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class ActivityUpdateEvent extends AppCompatActivity {
@@ -19,6 +18,8 @@ public class ActivityUpdateEvent extends AppCompatActivity {
     private Event.EventLogEntry lastEventLog;
     private EventDao eventDao;
     private Context context;
+    private boolean isModified = false;
+    private final static int MODIFY_EVENT_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class ActivityUpdateEvent extends AppCompatActivity {
     }
 
     private void setActivity() {
-        setTitle(event.getName());
+        setTitle(getString(R.string.activity_update_event_title) + " " + event.getName());
 
         TextView descriptionView = (TextView) findViewById(R.id.update_event_description);
         if (event.getDescription().isEmpty()) {
@@ -102,8 +103,37 @@ public class ActivityUpdateEvent extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onModifyButtonClick(View view) {
+        Intent intent = new Intent(this, ActivityModifyEvent.class);
+        event.putExtrasToIntent(intent);
+        startActivityForResult(intent, MODIFY_EVENT_REQUEST);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == MODIFY_EVENT_REQUEST && resultCode == RESULT_OK) {
+            event = Event.getEventFromIntent(data);
+            if (event.getId() == 0L) {
+                finishOk();
+                return;
+            }
+            isModified = true;
+            setActivity();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isModified) {
+            Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
+        }
+        super.onBackPressed();
+    }
+
     private void showAccomplishConfirmationDialog() {
-        final Date nextOccurrence = addDays(new Date(), event.getPeriodicityInDays());
+        final Date nextOccurrence = Commons.addDays(new Date(), event.getPeriodicityInDays());
         String newDate = Parameters.DATE_FORMAT.format(nextOccurrence);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.activity_update_event_accomplished_dialog_title);
@@ -112,9 +142,8 @@ public class ActivityUpdateEvent extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 event.setNextOccurrence(nextOccurrence);
                 accomplishEvent();
-                Intent intent = new Intent();
-                setResult(RESULT_OK, intent);
-                finish();
+                finishOk();
+                return;
             }
         });
         builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -127,7 +156,7 @@ public class ActivityUpdateEvent extends AppCompatActivity {
     }
 
     private void showSkipConfirmationDialog() {
-        final Date nextOccurrence = addDays(new Date(), event.getPeriodicityInDays());
+        final Date nextOccurrence = Commons.addDays(new Date(), event.getPeriodicityInDays());
         String newDate = Parameters.DATE_FORMAT.format(nextOccurrence);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.activity_update_event_skip_dialog_title);
@@ -136,9 +165,8 @@ public class ActivityUpdateEvent extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 event.setNextOccurrence(nextOccurrence);
                 skipEvent();
-                Intent intent = new Intent();
-                setResult(RESULT_OK, intent);
-                finish();
+                finishOk();
+                return;
             }
         });
         builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -160,7 +188,7 @@ public class ActivityUpdateEvent extends AppCompatActivity {
         if (postponeDays < 1 || postponeDays > 9999) {
             Commons.showErrorToast(context, getString(R.string.activity_update_event_error_postpone_days));
         }
-        final Date nextOccurrence = addDays(event.getNextOccurrence(), postponeDays);
+        final Date nextOccurrence = Commons.addDays(event.getNextOccurrence(), postponeDays);
         String newDate = Parameters.DATE_FORMAT.format(nextOccurrence);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.activity_update_event_postpone_dialog_title);
@@ -169,9 +197,8 @@ public class ActivityUpdateEvent extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 event.setNextOccurrence(nextOccurrence);
                 postponeEvent();
-                Intent intent = new Intent();
-                setResult(RESULT_OK, intent);
-                finish();
+                finishOk();
+                return;
             }
         });
         builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -207,11 +234,9 @@ public class ActivityUpdateEvent extends AppCompatActivity {
         eventDao.saveEventToLog(event, eventLogEntry);
     }
 
-
-    private Date addDays(Date date, int days) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.DATE, days);
-        return calendar.getTime();
+    private void finishOk() {
+        Intent intent = new Intent();
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

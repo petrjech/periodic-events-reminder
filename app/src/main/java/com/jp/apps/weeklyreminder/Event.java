@@ -20,12 +20,16 @@ public class Event implements Comparable<Event> {
 
     private long millisecondsPerDay = 86400000L;
 
-    public Boolean getVisibleOnWidget() {
+    public Boolean isVisibleOnWidget() {
         return isVisibleOnWidget;
     }
 
     public void setVisibleOnWidget(Boolean visibleOnWidget) {
         isVisibleOnWidget = visibleOnWidget;
+    }
+
+    public Event() {
+        this(null, null, null, null, null, null, null);
     }
 
     public Event(Long id, String name, String description, Integer periodicityInDays, Date nextOccurrence, Boolean isFrozen, Boolean isVisibleOnWidget) {
@@ -109,13 +113,27 @@ public class Event implements Comparable<Event> {
     }
 
     public void putExtrasToIntent(Intent intent) {
-        intent.putExtra("id", id);
-        intent.putExtra("name", name);
-        intent.putExtra("description", description);
-        intent.putExtra("periodicityInDays", periodicityInDays);
-        intent.putExtra("nextOccurrence", nextOccurrence.getTime());
-        intent.putExtra("isFrozen", isFrozen);
-        intent.putExtra("isVisibleOnWidget", isVisibleOnWidget);
+        if (id != null) {
+            intent.putExtra("id", id);
+        }
+        if (id != null) {
+            intent.putExtra("name", name);
+        }
+        if (id != null) {
+            intent.putExtra("description", description);
+        }
+        if (id != null) {
+            intent.putExtra("periodicityInDays", periodicityInDays);
+        }
+        if (id != null) {
+            intent.putExtra("nextOccurrence", nextOccurrence.getTime());
+        }
+        if (id != null) {
+            intent.putExtra("isFrozen", isFrozen);
+        }
+        if (id != null) {
+            intent.putExtra("isVisibleOnWidget", isVisibleOnWidget);
+        }
     }
 
     public static Event getEventFromIntent(Intent intent) {

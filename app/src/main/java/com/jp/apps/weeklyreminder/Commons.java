@@ -3,6 +3,9 @@ package com.jp.apps.weeklyreminder;
 import android.content.Context;
 import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class Commons {
 
     static void showErrorToast(Context context, String message) {
@@ -32,5 +35,12 @@ public class Commons {
                 return context.getResources().getColor(R.color.colorEventHistoryActionSkipped);
         }
         return 0;
+    }
+
+    static Date addDays(Date date, int days) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, days);
+        return calendar.getTime();
     }
 }

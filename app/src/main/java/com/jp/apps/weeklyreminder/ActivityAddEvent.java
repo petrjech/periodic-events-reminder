@@ -16,7 +16,7 @@ import java.util.Date;
 
 public class ActivityAddEvent extends AppCompatActivity {
 
-    private Event event = new Event(null, null, null, null, null, null, null);
+    private Event event = new Event();
     private EventDao eventDao;
     private Context context;
 
@@ -64,7 +64,7 @@ public class ActivityAddEvent extends AppCompatActivity {
             return;
         }
 
-        eventDao.saveEvent(event);
+        eventDao.addEvent(event);
 
         Intent intent = new Intent();
         setResult(RESULT_OK, intent);
@@ -72,7 +72,7 @@ public class ActivityAddEvent extends AppCompatActivity {
     }
 
     private void setOccurrenceDate() {
-        String todayString = Parameters.DATE_FORMAT.format(new Date());
+        String todayString = Parameters.DATE_FORMAT.format(Commons.addDays(new Date(), 1));
         EditText editTextNextOccurrence = (EditText) findViewById(R.id.add_event_input_occurrence);
         editTextNextOccurrence.setText(todayString);
     }
@@ -124,7 +124,7 @@ public class ActivityAddEvent extends AppCompatActivity {
                 isPeriodicityValid = false;
             }
         }
-        if (!isPeriodicityValid || periodicity < 1) {
+        if (!isPeriodicityValid || periodicity < 1 || periodicity > 9999) {
             Commons.showErrorToast(context, getString(R.string.activity_add_event_error_periodicity));
             return false;
         }

@@ -22,7 +22,9 @@ public class ActivityEventHistory extends AppCompatActivity {
 
         EventDao eventDao = Parameters.getEventDao();
         Intent intent = getIntent();
-        eventHistoryList.addAll(eventDao.getEventLogs(Event.getEventFromIntent(intent)));
+        Event event = Event.getEventFromIntent(intent);
+        setTitle(getString(R.string.activity_event_history_title) + " " + event.getName());
+        eventHistoryList.addAll(eventDao.getEventLogs(event));
         ListView eventHistoryListView = (ListView) findViewById(R.id.event_history_list);
         ListAdapterEventHistory listAdapterEventHistory = new ListAdapterEventHistory(this, eventHistoryList);
         eventHistoryListView.setAdapter(listAdapterEventHistory);

@@ -42,7 +42,7 @@ public class EventDaoImpl implements EventDao {
     }
 
     @Override
-    public long saveEvent(Event event) {
+    public long addEvent(Event event) {
         ContentValues values = getContentValues(event);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -225,7 +225,7 @@ public class EventDaoImpl implements EventDao {
         values.put(EVENTS_COLUMNS.IS_FROZEN.name(), event.isFrozen());
         values.put(EVENTS_COLUMNS.NEXT_OCCURRENCE.name(), DatabaseSQLiteHelper.convertDateToString(event.getNextOccurrence()));
         values.put(EVENTS_COLUMNS.PERIODICITY.name(), event.getPeriodicityInDays());
-        values.put(EVENTS_COLUMNS.IS_VISIBLE_ON_WIDGET.name(), event.getVisibleOnWidget());
+        values.put(EVENTS_COLUMNS.IS_VISIBLE_ON_WIDGET.name(), event.isVisibleOnWidget());
         return values;
     }
 }

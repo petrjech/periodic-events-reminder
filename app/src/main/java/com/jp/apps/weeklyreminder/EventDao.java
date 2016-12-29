@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface EventDao {
 
-    long saveEvent(Event event);
+    long addEvent(Event event);
 
     boolean isNameUsed(String name);
 
