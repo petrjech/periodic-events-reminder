@@ -4,5 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="event_list_progress_height">8dp</dimen>
     <dimen name="event_history_item_color_width">8dp</dimen>
+    <dimen name="field_padding">4dp</dimen>
+    <dimen name="field_margin">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 </resources>

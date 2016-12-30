@@ -14,6 +14,7 @@
     tools:showIn="@layout/activity_update_event">
 
     <TextView
+        android:id="@+id/update_event_description_label"
         style="@style/CustomFieldLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,13 +22,15 @@
 
     <TextView
         android:id="@+id/update_event_description"
-        style="@style/CustomField"
+        style="@style/CustomFieldPadding"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/field_margin" />
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/field_margin"
         android:stretchColumns="*">
 
         <TableRow>
@@ -57,19 +60,19 @@
 
             <TextView
                 android:id="@+id/update_event_next_occurrence"
-                style="@style/CustomField" />
+                style="@style/CustomFieldPadding" />
 
             <TextView
                 android:id="@+id/update_event_periodicity"
-                style="@style/CustomField" />
+                style="@style/CustomFieldPadding" />
 
             <TextView
                 android:id="@+id/update_event_is_active"
-                style="@style/CustomField" />
+                style="@style/CustomFieldPadding" />
 
             <TextView
                 android:id="@+id/update_event_is_widget_visible"
-                style="@style/CustomField" />
+                style="@style/CustomFieldPadding" />
         </TableRow>
     </TableLayout>
 
@@ -81,38 +84,52 @@
         android:text="@string/activity_update_event_last_action_title" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/update_event_last_action_date"
-            style="@style/CustomField"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/update_event_last_action_action"
-            style="@style/CustomField"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            style="@style/CustomField"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="right|bottom"
-            android:onClick="onHistoryButtonClick"
-            android:text="@string/activity_update_event_show_history"
-            android:textColor="@color/colorLightDisabled"
-            android:textSize="12sp" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/update_event_last_action_note"
         style="@style/CustomField"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/field_margin"
+        android:onClick="onHistoryButtonClick"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/update_event_last_action_date"
+                style="@style/CustomFieldInnerPadding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="0pt" />
+
+            <TextView
+                android:id="@+id/update_event_last_action_action"
+                style="@style/CustomFieldInnerPadding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="0pt" />
+
+            <TextView
+                style="@style/CustomFieldInnerPadding"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right|bottom"
+                android:paddingBottom="0pt"
+                android:text="@string/activity_update_event_show_history"
+                android:textColor="@color/colorLightDisabled"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/update_event_last_action_note"
+            style="@style/CustomFieldPadding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingTop="0dp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -121,23 +138,24 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/update_event_input_note"
+                style="@style/CustomField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="top|left"
                 android:hint="@string/activity_update_event_note"
-                android:inputType="text"
-                style="@style/CustomField"/>
+                android:inputType="text" />
 
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/field_padding"
             android:orientation="vertical">
 
             <Button
@@ -163,6 +181,7 @@
                 android:text="@string/activity_update_event_postpone_button" />
 
             <LinearLayout
+                style="@style/CustomField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -170,16 +189,16 @@
                 <EditText
                     android:id="@+id/update_event_input_days"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
                     android:inputType="number"
                     android:text="1" />
 
                 <TextView
                     style="@style/CustomFieldLabel"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
                     android:text="@string/activity_update_event_postpone_days" />
             </LinearLayout>
         </LinearLayout>

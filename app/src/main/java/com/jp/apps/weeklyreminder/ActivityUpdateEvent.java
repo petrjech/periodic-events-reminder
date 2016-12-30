@@ -75,11 +75,14 @@ public class ActivityUpdateEvent extends AppCompatActivity {
         setTitle(getString(R.string.activity_update_event_title) + " " + event.getName());
 
         TextView descriptionView = (TextView) findViewById(R.id.update_event_description);
+        TextView descriptionLabelView = (TextView) findViewById(R.id.update_event_description_label);
         if (event.getDescription().isEmpty()) {
             descriptionView.setVisibility(View.GONE);
+            descriptionLabelView.setVisibility(View.GONE);
         } else {
             descriptionView.setVisibility(View.VISIBLE);
             descriptionView.setText(event.getDescription());
+            descriptionLabelView.setVisibility(View.VISIBLE);
         }
 
         TextView lastActionDateView = (TextView) findViewById(R.id.update_event_last_action_date);
