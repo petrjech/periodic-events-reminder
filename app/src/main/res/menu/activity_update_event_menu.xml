@@ -2,6 +2,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.jp.apps.weeklyreminder.ActivityUpdateEvent">
+
+    <item
+        android:id="@+id/action_modify_event"
+        android:orderInCategory="80"
+        android:title="@string/activity_update_menu_modify_event"
+        android:icon="@android:drawable/ic_menu_edit"
+        app:showAsAction="ifRoom"  />
+
+    <item
+        android:id="@+id/action_delete_event"
+        android:orderInCategory="90"
+        android:title="@string/activity_update_menu_delete_event"
+        android:icon="@android:drawable/ic_menu_delete"
+        app:showAsAction="ifRoom"  />
+
     <item
         android:id="@+id/action_show_settings"
         android:orderInCategory="100"

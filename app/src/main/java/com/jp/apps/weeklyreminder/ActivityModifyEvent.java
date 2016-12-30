@@ -1,8 +1,6 @@
 package com.jp.apps.weeklyreminder;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -76,10 +74,6 @@ public class ActivityModifyEvent extends AppCompatActivity {
         event.putExtrasToIntent(intent);
         setResult(RESULT_OK, intent);
         finish();
-    }
-
-    public void onDeleteButtonClick(@SuppressWarnings("UnusedParameters") View view) {
-        showDeleteConfirmationDialog();
     }
 
     private void setActivity() {
@@ -192,31 +186,6 @@ public class ActivityModifyEvent extends AppCompatActivity {
         CheckBox checkboxVisible = (CheckBox) findViewById(R.id.modify_event_checkbox_visible);
         event.setVisibleOnWidget(checkboxVisible.isChecked());
         return true;
-    }
-
-    private void showDeleteConfirmationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.activity_modify_event_delete_dialog_title);
-        builder.setMessage(R.string.activity_modify_event_delete_dialog_text);
-        builder.setPositiveButton(R.string.activity_modify_event_delete_delete_button, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                if (!eventDao.deleteEvent(event)) {
-                    throw new RuntimeException("Error deleting event");
-                }
-                Intent intent = new Intent();
-                Event emptyEvent = new Event();
-                emptyEvent.putExtrasToIntent(intent);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
-        builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.show();
     }
 }
 

@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,7 +20,6 @@ public class ActivityUpdateEvent extends AppCompatActivity {
     private Event.EventLogEntry lastEventLog;
     private EventDao eventDao;
     private Context context;
-    private boolean isModified = false;
     private final static int MODIFY_EVENT_REQUEST = 1;
 
     @Override
@@ -35,6 +36,39 @@ public class ActivityUpdateEvent extends AppCompatActivity {
         lastEventLog = eventDao.getLastEventLog(event);
 
         setActivity();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity_update_event_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_show_settings:
+                showSettings();
+                return true;
+
+            case R.id.action_modify_event:
+                startModifyActivity();
+                return true;
+
+            case R.id.action_delete_event:
+                showDeleteConfirmationDialog();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void showSettings() {
+        //TODO implement showSettings()
     }
 
     private void setActivity() {
@@ -65,11 +99,20 @@ public class ActivityUpdateEvent extends AppCompatActivity {
             }
         }
 
+        String text;
         TextView nextOccurrenceView = (TextView) findViewById(R.id.update_event_next_occurrence);
         nextOccurrenceView.setText(Parameters.DATE_FORMAT.format(event.getNextOccurrence()));
 
         TextView periodicityView = (TextView) findViewById(R.id.update_event_periodicity);
         periodicityView.setText(String.valueOf(event.getPeriodicityInDays()));
+
+        TextView isActiveView = (TextView) findViewById(R.id.update_event_is_active);
+        text = event.isFrozen() ? getString(R.string.no) : getString(R.string.yes);
+        isActiveView.setText(text);
+
+        TextView isWidgetVisibleView = (TextView) findViewById(R.id.update_event_is_widget_visible);
+        text = event.isVisibleOnWidget() ? getString(R.string.yes) : getString(R.string.no);
+        isWidgetVisibleView.setText(text);
     }
 
     private String getActionText(EventActions eventAction) {
@@ -103,33 +146,18 @@ public class ActivityUpdateEvent extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onModifyButtonClick(View view) {
+    public void startModifyActivity() {
         Intent intent = new Intent(this, ActivityModifyEvent.class);
         event.putExtrasToIntent(intent);
         startActivityForResult(intent, MODIFY_EVENT_REQUEST);
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == MODIFY_EVENT_REQUEST && resultCode == RESULT_OK) {
             event = Event.getEventFromIntent(data);
-            if (event.getId() == 0L) {
-                finishOk();
-                return;
-            }
-            isModified = true;
             setActivity();
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (isModified) {
-            Intent intent = new Intent();
-            setResult(RESULT_OK, intent);
-        }
-        super.onBackPressed();
     }
 
     private void showAccomplishConfirmationDialog() {
@@ -143,7 +171,6 @@ public class ActivityUpdateEvent extends AppCompatActivity {
                 event.setNextOccurrence(nextOccurrence);
                 accomplishEvent();
                 finishOk();
-                return;
             }
         });
         builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -166,7 +193,6 @@ public class ActivityUpdateEvent extends AppCompatActivity {
                 event.setNextOccurrence(nextOccurrence);
                 skipEvent();
                 finishOk();
-                return;
             }
         });
         builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -198,7 +224,6 @@ public class ActivityUpdateEvent extends AppCompatActivity {
                 event.setNextOccurrence(nextOccurrence);
                 postponeEvent();
                 finishOk();
-                return;
             }
         });
         builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -238,5 +263,26 @@ public class ActivityUpdateEvent extends AppCompatActivity {
         Intent intent = new Intent();
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.activity_update_event_delete_dialog_title);
+        builder.setMessage(R.string.activity_update_event_delete_dialog_text);
+        builder.setPositiveButton(R.string.activity_update_event_delete_delete_button, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                if (!eventDao.deleteEvent(event)) {
+                    throw new RuntimeException("Error deleting event");
+                }
+                finishOk();
+            }
+        });
+        builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.setIcon(android.R.drawable.ic_menu_delete );
+        builder.show();
     }
 }

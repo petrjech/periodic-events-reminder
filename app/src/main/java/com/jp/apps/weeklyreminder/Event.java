@@ -3,9 +3,7 @@ package com.jp.apps.weeklyreminder;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Event implements Comparable<Event> {
 
@@ -16,9 +14,8 @@ public class Event implements Comparable<Event> {
     private Date nextOccurrence;
     private Boolean isFrozen;
     private Boolean isVisibleOnWidget;
-    private List<EventLogEntry> eventLog = new ArrayList<>();
 
-    private long millisecondsPerDay = 86400000L;
+    private static final long MILLISECONDS_PER_DAY = 86400000L;
 
     public Boolean isVisibleOnWidget() {
         return isVisibleOnWidget;
@@ -90,26 +87,17 @@ public class Event implements Comparable<Event> {
         this.nextOccurrence = nextOccurrence;
     }
 
-    public final List<EventLogEntry> getEventLog() {
-        return eventLog;
-    }
-
-    public final void setEventLog(List<EventLogEntry> eventLog) {
-        this.eventLog = eventLog;
-    }
-
     public final float getEventApproach() {
         Date today = new Date();
         long difference = nextOccurrence.getTime() - today.getTime();
         if (difference <= 0) {
             return 1f;
         }
-        long periodicityInMilliseconds = periodicityInDays * millisecondsPerDay;
+        long periodicityInMilliseconds = periodicityInDays * MILLISECONDS_PER_DAY;
         if (periodicityInMilliseconds <= difference) {
             return 0f;
         }
-        float result = 1 - (((float) difference) / periodicityInMilliseconds);
-        return result;
+        return 1 - (((float) difference) / periodicityInMilliseconds);
     }
 
     public void putExtrasToIntent(Intent intent) {

@@ -13,51 +13,65 @@ app:layout_behavior="@string/appbar_scrolling_view_behavior"
 tools:context="com.jp.apps.weeklyreminder.ActivityModifyEvent"
 tools:showIn="@layout/activity_modify_event">
 
-<TextView
-    style="@style/CustomFieldTitle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="@string/activity_modify_event_name" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:text="@string/activity_modify_event_instructions"/>
 
-<EditText
-    android:id="@+id/modify_event_input_name"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-<TextView
-    style="@style/CustomFieldTitle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="@string/activity_modify_event_description" />
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/modify_event_input_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:singleLine="true"
+            android:hint="@string/activity_modify_event_name"/>
 
-<EditText
-    android:id="@+id/modify_event_input_description"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    </android.support.design.widget.TextInputLayout>
 
-<TextView
-    style="@style/CustomFieldTitle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="@string/activity_modify_event_periodicity" />
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-<EditText
-    android:id="@+id/modify_event_input_periodicity"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:inputType="number"/>
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/modify_event_input_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/activity_modify_event_description"/>
 
-<TextView
-    style="@style/CustomFieldTitle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="@string/activity_modify_event_occurrence" />
+    </android.support.design.widget.TextInputLayout>
 
-<EditText
-    android:id="@+id/modify_event_input_occurrence"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:inputType="date"/>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/modify_event_input_periodicity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="@string/activity_modify_event_periodicity"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/modify_event_input_occurrence"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:hint="@string/activity_modify_event_occurrence"/>
+
+    </android.support.design.widget.TextInputLayout>
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -88,13 +102,5 @@ tools:showIn="@layout/activity_modify_event">
     android:paddingTop="20dp"
     android:text="@string/activity_modify_event_submit_button"
     android:onClick="onSubmitButtonClick"/>
-
-<Button
-    android:id="@+id/modify_event_delete_button"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="20dp"
-    android:text="@string/activity_modify_event_delete_button"
-    android:onClick="onDeleteButtonClick"/>
 
 </LinearLayout>

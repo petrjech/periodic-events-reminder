@@ -3,13 +3,13 @@ package com.jp.apps.weeklyreminder;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.EditText;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -73,8 +73,8 @@ public class ActivityAddEvent extends AppCompatActivity {
 
     private void setOccurrenceDate() {
         String todayString = Parameters.DATE_FORMAT.format(Commons.addDays(new Date(), 1));
-        EditText editTextNextOccurrence = (EditText) findViewById(R.id.add_event_input_occurrence);
-        editTextNextOccurrence.setText(todayString);
+        TextInputEditText textInputEditTextNextOccurrence = (TextInputEditText) findViewById(R.id.add_event_input_occurrence);
+        textInputEditTextNextOccurrence.setText(todayString);
     }
 
     private boolean setEvent() {
@@ -87,8 +87,8 @@ public class ActivityAddEvent extends AppCompatActivity {
     }
 
     private boolean setName() {
-        EditText editTextName = (EditText) findViewById(R.id.add_event_input_name);
-        String name = editTextName.getText().toString();
+        TextInputEditText textInputEditTextName = (TextInputEditText) findViewById(R.id.add_event_input_name);
+        String name = textInputEditTextName.getText().toString();
         if (name.isEmpty()) {
             Commons.showErrorToast(context, getString(R.string.activity_add_event_error_no_name));
             return false;
@@ -102,15 +102,15 @@ public class ActivityAddEvent extends AppCompatActivity {
     }
 
     private boolean setDescription() {
-        EditText editTextDescription = (EditText) findViewById(R.id.add_event_input_description);
-        String description = editTextDescription.getText().toString();
+        TextInputEditText textInputEditTextDescription = (TextInputEditText) findViewById(R.id.add_event_input_description);
+        String description = textInputEditTextDescription.getText().toString();
         event.setDescription(description);
         return true;
     }
 
     private boolean setPeriodicity() {
-        EditText editTextPeriodicity = (EditText) findViewById(R.id.add_event_input_periodicity);
-        String periodicityString = editTextPeriodicity.getText().toString();
+        TextInputEditText textInputEditTextPeriodicity = (TextInputEditText) findViewById(R.id.add_event_input_periodicity);
+        String periodicityString = textInputEditTextPeriodicity.getText().toString();
 
         Integer periodicity = null;
         boolean isPeriodicityValid = true;
@@ -133,8 +133,8 @@ public class ActivityAddEvent extends AppCompatActivity {
     }
 
     private boolean setNextOccurrence() {
-        EditText editTextNextOccurrence = (EditText) findViewById(R.id.add_event_input_occurrence);
-        String nextOccurrenceString = editTextNextOccurrence.getText().toString();
+        TextInputEditText textInputEditTextNextOccurrence = (TextInputEditText) findViewById(R.id.add_event_input_occurrence);
+        String nextOccurrenceString = textInputEditTextNextOccurrence.getText().toString();
         Date nextOccurrence;
         try {
             nextOccurrence = Parameters.DATE_FORMAT.parse(nextOccurrenceString);
