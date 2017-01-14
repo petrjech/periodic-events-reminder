@@ -9,6 +9,9 @@ public class Parameters {
     public final static String DATE_FORMAT_STRING = "d.M.yyyy";
     public final static SimpleDateFormat DATE_FORMAT;
     public final static int MAX_EVENTS_ON_APP_WIDGET = 3;
+    public final static float EVENT_APPROACHING_THRESHOLD1 = 0.66f;
+    public final static float EVENT_APPROACHING_THRESHOLD2 = 0.94f;
+
 
     private static EventDao eventDao;
 

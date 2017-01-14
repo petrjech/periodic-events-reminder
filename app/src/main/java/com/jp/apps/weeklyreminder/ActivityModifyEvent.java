@@ -77,6 +77,7 @@ public class ActivityModifyEvent extends AppCompatActivity {
     }
 
     private void setActivity() {
+        // TODO set next occurrence to today if it is in the past
         setTitle(getString(R.string.activity_modify_event_title) + " " + event.getName());
 
         EditText nameInputView = (EditText) findViewById(R.id.modify_event_input_name);

@@ -22,8 +22,7 @@
             android:id="@+id/event_list_item_progress_left"
             android:layout_width="0dp"
             android:layout_height="@dimen/event_list_progress_height"
-            android:layout_weight="0.5"
-            android:background="@color/colorEventListProgressLeft" />
+            android:layout_weight="0.5" />
 
         <View
             android:id="@+id/event_list_item_progress_right"

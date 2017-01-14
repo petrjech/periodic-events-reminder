@@ -20,6 +20,7 @@ public class ActivityUpdateEvent extends AppCompatActivity {
     private Event.EventLogEntry lastEventLog;
     private EventDao eventDao;
     private Context context;
+    private boolean isModified = false;
     private final static int MODIFY_EVENT_REQUEST = 1;
 
     @Override
@@ -132,6 +133,7 @@ public class ActivityUpdateEvent extends AppCompatActivity {
 
     public void onAccomplishedButtonClick(View view) {
         //TODO what about frozen events?
+        //TODO postpone from today
         showAccomplishConfirmationDialog();
     }
 
@@ -159,8 +161,18 @@ public class ActivityUpdateEvent extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == MODIFY_EVENT_REQUEST && resultCode == RESULT_OK) {
             event = Event.getEventFromIntent(data);
+            isModified = true;
             setActivity();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isModified) {
+            Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
+        }
+        super.onBackPressed();
     }
 
     private void showAccomplishConfirmationDialog() {

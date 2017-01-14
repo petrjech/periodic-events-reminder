@@ -3,7 +3,10 @@
     <color name="colorPrimary">#212121</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#ffffff</color>
-    <color name="colorEventListProgressLeft">#209020</color>
+    <color name="colorEventListProgressLeftFrozen">#9e9e9e</color>
+    <color name="colorEventListProgressLeftThreshold1">#7cb342</color>
+    <color name="colorEventListProgressLeftThreshold2">#f9a825</color>
+    <color name="colorEventListProgressLeftThreshold3">#e64a19</color>
     <color name="colorEventListProgressRight">#30000000</color>
     <color name="colorEventHistoryActionAccomplished">#009000</color>
     <color name="colorEventHistoryActionPostponed">#909000</color>0

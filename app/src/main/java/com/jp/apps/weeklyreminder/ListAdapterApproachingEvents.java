@@ -70,6 +70,15 @@ public class ListAdapterApproachingEvents extends BaseAdapter {
 
             View leftProgress = approachingEventsListItem.findViewById(R.id.event_list_item_progress_left);
             float progress = event.getEventApproach();
+            if (event.isFrozen()) {
+                leftProgress.setBackgroundColor(context.getResources().getColor(R.color.colorEventListProgressLeftFrozen));
+            } else if (progress < Parameters.EVENT_APPROACHING_THRESHOLD1) {
+                leftProgress.setBackgroundColor(context.getResources().getColor(R.color.colorEventListProgressLeftThreshold1));
+            } else if (progress < Parameters.EVENT_APPROACHING_THRESHOLD2) {
+                leftProgress.setBackgroundColor(context.getResources().getColor(R.color.colorEventListProgressLeftThreshold2));
+            } else {
+                leftProgress.setBackgroundColor(context.getResources().getColor(R.color.colorEventListProgressLeftThreshold3));
+            }
             int height = (int) context.getResources().getDimension(R.dimen.event_list_progress_height);
             LinearLayout.LayoutParams paramsLeft = new LinearLayout.LayoutParams(1, height);
             paramsLeft.weight = progress;
