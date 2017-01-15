@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             style="@style/InputTextField"
             android:hint="@string/activity_add_event_description"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:clickable="false" />
 
     </android.support.design.widget.TextInputLayout>
@@ -78,7 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        style="@style/CustomFieldPadding"
+        style="@style/CustomField"
         android:onClick="showOccurrenceDialog"
         android:layout_marginBottom="@dimen/field_margin_double">
 
@@ -86,6 +86,7 @@
             android:id="@+id/add_event_input_occurrence"
             android:layout_width="0dp"
             android:layout_weight="1.0"
+            style="@style/CustomFieldInner"
             android:layout_height="wrap_content" />
 
         <TextView
@@ -104,7 +105,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/field_margin_double"
-        style="@style/CustomFieldPadding">
+        style="@style/CustomField">
 
         <CheckBox
             android:id="@+id/add_event_checkbox_active"

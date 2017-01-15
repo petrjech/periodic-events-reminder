@@ -29,10 +29,6 @@
         <item name="android:textColor">@color/colorLight</item>
     </style>
 
-    <style name="CustomFieldPadding" parent="CustomField">
-        <item name="android:padding">@dimen/field_padding</item>
-    </style>
-
     <style name="CustomFieldInner" parent="CustomField">
         <item name="android:background">#00000000</item>
     </style>

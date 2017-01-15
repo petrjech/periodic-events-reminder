@@ -25,7 +25,7 @@
     <string name="activity_update_event_accomplished_button">"Accomplish"</string>
     <string name="activity_update_event_accomplished_dialog_text">"Accomplish event and set new one to: "</string>
     <string name="activity_update_event_accomplished_dialog_title">"Accomplish confirmation"</string>
-    <string name="activity_update_event_description_label">"description"</string>
+    <string name="activity_update_event_description_label">"Description"</string>
     <string name="activity_update_event_error_postpone_days">"Days has to be number from 1 to 9999 days."</string>
     <string name="activity_update_event_skip_dialog_text">"Skip event and set new one to: "</string>
     <string name="activity_update_event_skip_dialog_title">"Skip confirmation"</string>
@@ -33,11 +33,11 @@
     <string name="activity_update_event_postpone_dialog_title">"Postpone confirmation"</string>
     <string name="activity_update_menu_delete_event">"Delete event"</string>
     <string name="activity_update_menu_modify_event">"Modify event"</string>
-    <string name="activity_update_event_next_occurrence_label">"next date"</string>
-    <string name="activity_update_event_periodicity_label">"periodicity"</string>
-    <string name="activity_update_event_is_active_label">"is active"</string>
-    <string name="activity_update_event_is_widget_visible_label">"widget visible"</string>
-    <string name="activity_update_event_last_action_title">"last action"</string>
+    <string name="activity_update_event_next_occurrence_label">"Next date"</string>
+    <string name="activity_update_event_periodicity_label">"Periodicity"</string>
+    <string name="activity_update_event_is_active_label">"Is active"</string>
+    <string name="activity_update_event_is_widget_visible_label">"Widget visible"</string>
+    <string name="activity_update_event_last_action_title">"Last action"</string>
     <string name="activity_update_event_no_last_action">"No event history yet"</string>
     <string name="activity_update_event_postpone_button">"Postpone"</string>
     <string name="activity_update_event_postpone_days">"days"</string>
