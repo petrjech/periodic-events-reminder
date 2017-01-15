@@ -13,4 +13,5 @@
     <color name="colorEventHistoryActionSkipped">#900000</color>
     <color name="colorLight">#ffffff</color>
     <color name="colorLightDisabled">#b3ffffff</color>
+    <color name="colorCustomFieldBackground">#30030831</color>
 </resources>

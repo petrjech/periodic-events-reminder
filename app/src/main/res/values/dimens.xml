@@ -6,7 +6,9 @@
     <dimen name="event_history_item_color_width">8dp</dimen>
     <dimen name="field_padding">4dp</dimen>
     <dimen name="field_margin">8dp</dimen>
+    <dimen name="field_margin_double">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="field_corner_radius">4dp</dimen>
 
     <!--
 Refer to App Widget Documentation for margin information

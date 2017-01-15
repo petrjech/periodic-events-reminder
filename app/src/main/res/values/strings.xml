@@ -13,6 +13,7 @@
     <string name="activity_add_event_error_periodicity">"Periodicity has to be number from 1 to 9999 days."</string>
     <string name="activity_add_event_name">"Name"</string>
     <string name="activity_add_event_occurrence">"First occurrence"</string>
+    <string name="activity_add_event_occurrence_button">"Change"</string>
     <string name="activity_add_event_periodicity">"Periodicity in days"</string>
     <string name="activity_add_event_submit_button">"Submit"</string>
     <string name="activity_add_event_instructions">"Fill out the event properties:"</string>
@@ -67,4 +68,5 @@
     <string name="no">"No"</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="click_to_change">(click to change)</string>
 </resources>

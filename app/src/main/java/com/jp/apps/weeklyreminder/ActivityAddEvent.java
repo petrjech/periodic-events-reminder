@@ -1,5 +1,8 @@
 package com.jp.apps.weeklyreminder;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
+import android.widget.TextView;
 
-import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 public class ActivityAddEvent extends AppCompatActivity {
@@ -19,6 +24,8 @@ public class ActivityAddEvent extends AppCompatActivity {
     private Event event = new Event();
     private EventDao eventDao;
     private Context context;
+    private TextView firstOccurrenceView;
+    private final Calendar calendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +37,9 @@ public class ActivityAddEvent extends AppCompatActivity {
         context = this;
         eventDao = Parameters.getEventDao();
 
-        setOccurrenceDate();
+        calendar.setTime(new Date());
+        firstOccurrenceView = (TextView) findViewById(R.id.add_event_input_occurrence);
+        firstOccurrenceView.setText(Parameters.DATE_FORMAT.format(calendar.getTime()));
     }
 
     @Override
@@ -71,10 +80,31 @@ public class ActivityAddEvent extends AppCompatActivity {
         finish();
     }
 
-    private void setOccurrenceDate() {
-        String todayString = Parameters.DATE_FORMAT.format(Commons.addDays(new Date(), 1));
-        TextInputEditText textInputEditTextNextOccurrence = (TextInputEditText) findViewById(R.id.add_event_input_occurrence);
-        textInputEditTextNextOccurrence.setText(todayString);
+    public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            ActivityAddEvent activity = (ActivityAddEvent) getActivity();
+            // Create a new instance of DatePickerDialog and return it
+            DatePickerDialog dialog = new DatePickerDialog(getActivity(), this,
+                    activity.calendar.get(Calendar.YEAR),
+                    activity.calendar.get(Calendar.MONTH),
+                    activity.calendar.get(Calendar.DAY_OF_MONTH));
+            DatePicker datePicker = dialog.getDatePicker();
+            datePicker.setMinDate(activity.calendar.getTimeInMillis());
+            return dialog;
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            ActivityAddEvent activity = (ActivityAddEvent) getActivity();
+            activity.calendar.set(year, month, day);
+            activity.firstOccurrenceView.setText(Parameters.DATE_FORMAT.format(activity.calendar.getTime()));
+        }
+    }
+
+    public void showOccurrenceDialog(View view) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getFragmentManager(), "datePicker");
     }
 
     private boolean setEvent() {
@@ -133,20 +163,7 @@ public class ActivityAddEvent extends AppCompatActivity {
     }
 
     private boolean setNextOccurrence() {
-        TextInputEditText textInputEditTextNextOccurrence = (TextInputEditText) findViewById(R.id.add_event_input_occurrence);
-        String nextOccurrenceString = textInputEditTextNextOccurrence.getText().toString();
-        Date nextOccurrence;
-        try {
-            nextOccurrence = Parameters.DATE_FORMAT.parse(nextOccurrenceString);
-        } catch (ParseException e) {
-            Commons.showErrorToast(context, getString(R.string.activity_add_event_error_date_format) + Parameters.DATE_FORMAT_STRING);
-            return false;
-        }
-        if (nextOccurrence.compareTo(new Date()) < 1) {
-            Commons.showErrorToast(context, getString(R.string.activity_add_event_error_date));
-            return false;
-        }
-        event.setNextOccurrence(nextOccurrence);
+        event.setNextOccurrence(calendar.getTime());
         return true;
     }
 

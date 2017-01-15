@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <corners
+        android:bottomLeftRadius="@dimen/field_corner_radius"
+        android:bottomRightRadius="@dimen/field_corner_radius"
+        android:topLeftRadius="@dimen/field_corner_radius"
+        android:topRightRadius="@dimen/field_corner_radius" />
+
+    <padding
+        android:bottom="@dimen/field_padding"
+        android:left="@dimen/field_padding"
+        android:right="@dimen/field_padding"
+        android:top="@dimen/field_padding" />
+
+    <solid android:color="@color/colorCustomFieldBackground" />
+
+</shape>

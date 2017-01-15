@@ -17,65 +17,94 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:text="@string/activity_add_event_instructions"/>
+        android:paddingLeft="@dimen/field_padding"
+        android:text="@string/activity_add_event_instructions"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/field_margin">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/add_event_input_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/InputTextField"
+            android:hint="@string/activity_add_event_name"
             android:inputType="text"
-            android:singleLine="true"
-            android:hint="@string/activity_add_event_name"/>
+            android:singleLine="true" />
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/field_margin">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/add_event_input_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/InputTextField"
+            android:hint="@string/activity_add_event_description"
             android:inputType="text"
-            android:hint="@string/activity_add_event_description"/>
+            android:clickable="false" />
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/field_margin">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/add_event_input_periodicity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="@string/activity_add_event_periodicity"/>
+            style="@style/InputTextField"
+            android:hint="@string/activity_add_event_periodicity"
+            android:inputType="number" />
 
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <TextView
+        style="@style/CustomFieldLabel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/add_event_input_occurrence"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="date"
-            android:hint="@string/activity_add_event_occurrence"/>
-
-    </android.support.design.widget.TextInputLayout>
+        android:layout_height="wrap_content"
+        android:text="@string/activity_add_event_occurrence" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        style="@style/CustomFieldPadding"
+        android:onClick="showOccurrenceDialog"
+        android:layout_marginBottom="@dimen/field_margin_double">
+
+        <TextView
+            android:id="@+id/add_event_input_occurrence"
+            android:layout_width="0dp"
+            android:layout_weight="1.0"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="right|bottom"
+            android:paddingBottom="0pt"
+            android:text="@string/click_to_change"
+            android:textColor="@color/colorLightDisabled"
+            android:textSize="12sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/field_margin_double"
+        style="@style/CustomFieldPadding">
 
         <CheckBox
             android:id="@+id/add_event_checkbox_active"
@@ -99,7 +128,9 @@
         android:id="@+id/add_event_submit_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/activity_add_event_submit_button"
-        android:onClick="onSubmitButtonClick"/>
+        android:onClick="onSubmitButtonClick"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:text="@string/activity_add_event_submit_button" />
 
 </LinearLayout>
