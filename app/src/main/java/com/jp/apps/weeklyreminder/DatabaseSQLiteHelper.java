@@ -16,7 +16,7 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     @SuppressLint("SimpleDateFormat")
-    private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 
     public enum TABLES {
         EVENTS, EVENT_LOGS

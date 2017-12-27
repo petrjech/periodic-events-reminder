@@ -8,9 +8,9 @@
     <color name="colorEventListProgressLeftThreshold2">#f9a825</color>
     <color name="colorEventListProgressLeftThreshold3">#e64a19</color>
     <color name="colorEventListProgressRight">#30000000</color>
-    <color name="colorEventHistoryActionAccomplished">#009000</color>
-    <color name="colorEventHistoryActionPostponed">#909000</color>0
-    <color name="colorEventHistoryActionSkipped">#900000</color>
+    <color name="colorEventHistoryActionAccomplished">#9ccc65</color>
+    <color name="colorEventHistoryActionPostponed">#ffab40</color>0
+    <color name="colorEventHistoryActionSkipped">#ff5252</color>
     <color name="colorLight">#ffffff</color>
     <color name="colorLightDisabled">#b3ffffff</color>
     <color name="colorCustomFieldBackground">#30030831</color>

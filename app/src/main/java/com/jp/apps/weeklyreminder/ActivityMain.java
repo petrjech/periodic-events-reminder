@@ -1,5 +1,7 @@
 package com.jp.apps.weeklyreminder;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +15,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import layout.EventAppWidget;
 
 public class ActivityMain extends AppCompatActivity {
     //TODO introduce event categories and category filtering?
@@ -45,6 +49,15 @@ public class ActivityMain extends AppCompatActivity {
                 openEventActivity(event);
             }
         });
+    }
+
+    private void updateWidget(Context context) {
+        Intent intent = new Intent(context, EventAppWidget.class);
+        intent.setAction(EventAppWidget.UPDATE_WIDGET_ACTION);
+        AppWidgetManager appManager = AppWidgetManager.getInstance(getApplication());
+        int[] ids = appManager.getAppWidgetIds(new ComponentName(getApplication(), EventAppWidget.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        sendBroadcast(intent);
     }
 
     private void initialize(Context context) {
@@ -97,6 +110,7 @@ public class ActivityMain extends AppCompatActivity {
             approachingEventsList.clear();
             approachingEventsList.addAll(eventDao.getAllSortedEvents());
             listAdapterApproachingEvents.notifyDataSetChanged();
+            updateWidget(this);
         }
     }
 }
