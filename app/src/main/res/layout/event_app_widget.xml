@@ -12,10 +12,10 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_margin="6dp"
-        android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
-        android:textColor="#ffe57f"
-        android:textSize="8sp"
+        android:contentDescription="@string/appwidget_description"
+        android:text=""
+        android:textColor="#fff"
+        android:textSize="10sp"
         android:fontFamily="sans-serif-light"/>
 
 </RelativeLayout>

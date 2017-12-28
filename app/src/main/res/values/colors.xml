@@ -7,6 +7,9 @@
     <color name="colorEventListProgressLeftThreshold1">#7cb342</color>
     <color name="colorEventListProgressLeftThreshold2">#f9a825</color>
     <color name="colorEventListProgressLeftThreshold3">#e64a19</color>
+    <color name="colorWidgetThreshold1">#c2ff82</color>
+    <color name="colorWidgetThreshold2">#ffe96d</color>
+    <color name="colorWidgetThreshold3">#ff8a8c</color>
     <color name="colorEventListProgressRight">#30000000</color>
     <color name="colorEventHistoryActionAccomplished">#9ccc65</color>
     <color name="colorEventHistoryActionPostponed">#ffab40</color>0
