@@ -107,15 +107,18 @@ public class EventAppWidget extends AppWidgetProvider {
             }
             resultText += trimToMaxLength(event.getName());
         }
+        if (isRed) {
+            redEnd = resultText.length();
+        }
         yellowEnd = resultText.length();
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
         dateFormat.setLenient(false);
         resultText += "\n" +  dateFormat.format(new Date());
-
-
         SpannableString result = new SpannableString(resultText);
         result.setSpan(red, redStart, redEnd, SPAN_INCLUSIVE_INCLUSIVE);
-        result.setSpan(yellow, redEnd, yellowEnd, SPAN_EXCLUSIVE_INCLUSIVE);
+        if (!isRed) {
+            result.setSpan(yellow, redEnd, yellowEnd, SPAN_EXCLUSIVE_INCLUSIVE);
+        }
         result.setSpan(green, yellowEnd, result.length(), SPAN_EXCLUSIVE_INCLUSIVE);
         return result;
     }
@@ -124,16 +127,17 @@ public class EventAppWidget extends AppWidgetProvider {
         List<Event> eventsToShow = new ArrayList<>();
         EventDao eventDao = new EventDaoImpl(context);
         List<Event> eventList = eventDao.getAllSortedEvents();
-        int counter = 1;
+        int counter = 0;
         for (Event event: eventList) {
             if (Parameters.EVENT_APPROACHING_THRESHOLD1 > event.getEventApproach()) {
                 break;
             }
-            if (event.isVisibleOnWidget()) {
-                eventsToShow.add(event);
-                counter += 1;
+            counter += 1;
+            eventsToShow.add(event);
+            if (!event.isVisibleOnWidget()) {
+                event.setName(context.getString(R.string.widget_hidden_item));
             }
-            if (counter > Parameters.WIDGET_MAX_LINES) {
+            if (counter >= Parameters.WIDGET_MAX_LINES) {
                 break;
             }
         }
